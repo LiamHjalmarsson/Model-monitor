@@ -54,10 +54,6 @@ export async function login(
 	}
 }
 
-/**
- * POST /api/auth/logout
- * (Stateless JWT: klienten tar bort token själv)
- */
 export function logout(req: Request, res: Response): Response {
 	return res.status(200).json({ message: "Utloggad" });
 }

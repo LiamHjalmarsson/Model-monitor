@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-	getAllRatings,
+	getRatings,
 	getRatingById,
 	createRating,
 	updateRating,
@@ -11,7 +11,7 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.get("/", getAllRatings);
+router.get("/", getRatings);
 
 router.get("/:id", getRatingById);
 
