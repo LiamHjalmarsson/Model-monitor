@@ -13,6 +13,7 @@ interface Config {
 	pgPort: number;
 	jwtSecret: string;
 	jwtExpiresIn: SignOptions["expiresIn"];
+	openAi: string;
 }
 
 const config: Config = {
@@ -26,6 +27,7 @@ const config: Config = {
 	jwtSecret: process.env.JWT_SECRET || "default_secret",
 	jwtExpiresIn:
 		(process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"]) ?? "1h",
+	openAi: process.env.OPEN_AI || "development",
 };
 
 export default config;

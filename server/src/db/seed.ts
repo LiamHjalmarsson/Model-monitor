@@ -1,43 +1,88 @@
-import bcrypt from "bcrypt";
-import pool, { query } from "./index.js";
+import db from "./index.js";
+import bcrypt from "bcryptjs";
 
-async function seed(): Promise<void> {
+async function seed() {
 	try {
-		await query(`DROP TABLE IF EXISTS users CASCADE;`);
+		await db.query(`DROP TABLE IF EXISTS ratings CASCADE`);
 
-		await query(`
-            CREATE TABLE users (
-                id SERIAL PRIMARY KEY,
-                email TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL
-            );
-        `);
+		await db.query(`DROP TABLE IF EXISTS responses CASCADE`);
 
-		const password = await bcrypt.hash("password", 10);
+		await db.query(`DROP TABLE IF EXISTS brands CASCADE`);
 
-		const insertSql = `
-            INSERT INTO users (email, password)
-            VALUES ($1, $2), ($3, $4)
-            RETURNING id;
-        `;
+		await db.query(`DROP TABLE IF EXISTS users CASCADE`);
 
-		const values = [
-			"test@example.com",
-			password,
-			"user@example.com",
-			password,
-		];
+		// Create Users
 
-		const result = await query<{ id: number }>(insertSql, values);
+		await db.query(`
+			CREATE TABLE users (
+				id SERIAL PRIMARY KEY,
+				email TEXT UNIQUE NOT NULL,
+				password TEXT NOT NULL
+			);
+		`);
 
-		console.log(
-			"Inserted user IDs:",
-			result.rows.map((r) => r.id)
+		const hashed = await bcrypt.hash("password", 10);
+
+		await db.query(
+			`INSERT INTO users (email, password) VALUES 
+			('test@example.com', $1),
+			('admin@example.com', $1)`,
+			[hashed]
 		);
+
+		// Create brands
+		await db.query(`
+			CREATE TABLE brands (
+				id SERIAL PRIMARY KEY,
+				name TEXT NOT NULL,
+				prompt TEXT,
+				created_by INTEGER REFERENCES users(id)
+			);
+		`);
+
+		await db.query(`
+			INSERT INTO brands (name, prompt, created_by) VALUES
+			('OpenAI', 'How is OpenAI perceived?', 1),
+			('Nike', 'How is Nike perceived by Gen Z?', 1)
+		`);
+
+		// Create responses
+		await db.query(`
+			CREATE TABLE responses (
+				id SERIAL PRIMARY KEY,
+				brand_id INTEGER REFERENCES brands(id),
+				created_by INTEGER REFERENCES users(id),
+				content TEXT NOT NULL,
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			);
+		`);
+
+		await db.query(`
+			INSERT INTO responses (brand_id, created_by, content) VALUES
+			(1, 1, 'OpenAI is widely regarded as a leader in AI.'),
+			(2, 1, 'Nike remains a top choice among athletes and youth.')
+		`);
+
+		// Create ratings
+		await db.query(`
+			CREATE TABLE ratings (
+				id SERIAL PRIMARY KEY,
+				response_id INTEGER REFERENCES responses(id),
+				rating INTEGER CHECK (rating IN (0, 1))
+			);
+		`);
+
+		await db.query(`
+			INSERT INTO ratings (response_id, rating) VALUES
+			(1, 1),
+			(2, 0)
+		`);
+
+		console.log("✅ Seed successful!");
+		process.exit(0);
 	} catch (err) {
+		console.error("❌ Seed failed:", err);
 		process.exit(1);
-	} finally {
-		await pool.end();
 	}
 }
 
