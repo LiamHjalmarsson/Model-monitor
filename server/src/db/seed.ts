@@ -68,14 +68,16 @@ async function seed() {
 			CREATE TABLE ratings (
 				id SERIAL PRIMARY KEY,
 				response_id INTEGER REFERENCES responses(id),
-				rating INTEGER CHECK (rating IN (0, 1))
+				rating INTEGER CHECK (rating IN (0, 1)),
+				user_id INTEGER REFERENCES users(id),
+				CONSTRAINT unique_user_response UNIQUE (user_id, response_id)
 			);
 		`);
 
 		await db.query(`
-			INSERT INTO ratings (response_id, rating) VALUES
-			(1, 1),
-			(2, 0)
+			INSERT INTO ratings (response_id, rating, user_id) VALUES
+			(1, 1, 1),
+			(2, 0, 1)
 		`);
 
 		console.log("✅ Seed successful!");

@@ -6,7 +6,6 @@
 	"type": "module",
 	"scripts": {
 		"develop": "tsc && node dist/server.js",
-		"test": "node --watch ./src/server.ts",
 		"node": "nodemon",
 		"serve": "ts-node --respawn --transpile-only src/server.ts",
 		"build": "tsc",
