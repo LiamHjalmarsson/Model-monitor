@@ -5,6 +5,55 @@ interface AuthRequest extends Request {
 	userId?: number;
 }
 
+export async function getResponsesForBrand(req: AuthRequest, res: Response) {
+	const brandId = Number(req.params.brand_id);
+
+	const userId = req.userId!;
+
+	try {
+		const result = await query(
+			`SELECT r.*
+			FROM responses r
+			JOIN brands b ON r.brand_id = b.id
+			WHERE r.brand_id = $1
+			AND b.created_by = $2
+			ORDER BY r.created_at DESC`,
+			[brandId, userId]
+		);
+
+		res.json(result.rows);
+	} catch (err) {
+		res.status(500).json({ message: "Server error" });
+	}
+}
+
+export async function getResponseById(req: AuthRequest, res: Response) {
+	const id = Number(req.params.id);
+
+	const userId = req.userId!;
+
+	try {
+		const result = await query(
+			`SELECT r.*
+         FROM responses r
+         JOIN brands b ON r.brand_id = b.id
+        WHERE r.id = $1
+          AND b.created_by = $2`,
+			[id, userId]
+		);
+
+		if (result.rowCount === 0) {
+			return res
+				.status(404)
+				.json({ message: "Response not found or not authorized" });
+		}
+
+		res.json(result.rows[0]);
+	} catch (err) {
+		res.status(500).json({ message: "Server error" });
+	}
+}
+
 export async function getBrands(req: AuthRequest, res: Response) {
 	const result = await query("SELECT * FROM brands WHERE created_by = $1", [
 		req.userId,

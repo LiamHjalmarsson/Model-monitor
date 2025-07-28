@@ -14,8 +14,6 @@ app.use("/api/responses", responseRoute);
 
 app.use("/api/ratings", ratingRoute);
 
-app.use("/api/ratings", ratingRoute);
-
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, TypeScript + Node.js + Express!");
 });
