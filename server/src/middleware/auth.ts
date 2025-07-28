@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyJWT } from "../utils/token.js";
+import { verifyToken } from "../utils/token.js";
 
-export interface AuthenticatedRequest extends Request {
-	userId?: string;
+interface AuthenticatedRequest extends Request {
+	userId?: number;
 }
 
 export default function authMiddleware(
@@ -22,7 +22,7 @@ export default function authMiddleware(
 		: authHeader;
 
 	try {
-		const decoded = verifyJWT(token);
+		const decoded = verifyToken(token);
 
 		req.userId = decoded.userId;
 

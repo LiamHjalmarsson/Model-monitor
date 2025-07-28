@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import { Request, Response, NextFunction } from "express";
 import { query } from "../db/index.js";
-import { createJWT, JWTPayload } from "../utils/token.js";
+import { generateToken } from "../utils/token.js";
 
 interface LoginRequestBody {
 	email: string;
@@ -29,6 +29,7 @@ export async function login(
 
 		if (result.rowCount === 0) {
 			res.status(401).json({ message: "Invalid email or password" });
+
 			return;
 		}
 
@@ -38,12 +39,11 @@ export async function login(
 
 		if (!match) {
 			res.status(401).json({ message: "Invalid email or password" });
+
 			return;
 		}
 
-		const payload: JWTPayload = { userId: id.toString() };
-
-		const token = createJWT(payload);
+		const token = generateToken(id);
 
 		res.status(200).json({
 			token,

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import config from "./config/config.js";
 import app from "./app.js";
-import authRoute from "./routes/authRoutes.js";
+import authRoute from "./routes/authRoute.js";
 
 app.use("/api/auth", authRoute);
 

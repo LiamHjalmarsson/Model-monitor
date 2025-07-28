@@ -13,11 +13,7 @@ async function seed(): Promise<void> {
             );
         `);
 
-		const plain = "password";
-
-		const saltRounds = 10;
-
-		const hashed: string = await bcrypt.hash(plain, saltRounds);
+		const password = await bcrypt.hash("password", 10);
 
 		const insertSql = `
             INSERT INTO users (email, password)
@@ -25,7 +21,12 @@ async function seed(): Promise<void> {
             RETURNING id;
         `;
 
-		const values = ["test@example.com", hashed, "user@example.com", hashed];
+		const values = [
+			"test@example.com",
+			password,
+			"user@example.com",
+			password,
+		];
 
 		const result = await query<{ id: number }>(insertSql, values);
 

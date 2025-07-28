@@ -1,16 +1,10 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
-export interface JWTPayload extends JwtPayload {
-	userId: string;
-}
+export const generateToken = (userId: number): string => {
+	return jwt.sign({ userId }, config.jwtSecret, { expiresIn: "7d" });
+};
 
-export function createJWT(payload: JWTPayload): string {
-	return jwt.sign(payload, config.jwtSecret, {
-		expiresIn: config.jwtExpiresIn,
-	});
-}
-
-export function verifyJWT(token: string): JWTPayload {
-	return jwt.verify(token, config.jwtSecret) as JWTPayload;
-}
+export const verifyToken = (token: string): any => {
+	return jwt.verify(token, config.jwtSecret);
+};
