@@ -5,7 +5,13 @@
   "main": "dist/app.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc && node dist/server.js"
+    "develop": "tsc && node dist/server.js",
+    "test": "node --watch ./src/server.ts",
+    "node": "nodemon",
+    "serve": "ts-node --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +23,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.1.0",
     "@types/pg": "^8.15.4",
-    "ts-node-dev": "^2.0.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
@@ -26,7 +33,6 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.10",
     "pg": "^8.16.3"
   }
 }
