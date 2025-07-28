@@ -1,38 +1,41 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/app.js",
-  "type": "module",
-  "scripts": {
-    "develop": "tsc && node dist/server.js",
-    "test": "node --watch ./src/server.ts",
-    "node": "nodemon",
-    "serve": "ts-node --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^24.1.0",
-    "@types/pg": "^8.15.4",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.3"
-  }
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/app.js",
+	"type": "module",
+	"scripts": {
+		"develop": "tsc && node dist/server.js",
+		"test": "node --watch ./src/server.ts",
+		"node": "nodemon",
+		"serve": "ts-node --respawn --transpile-only src/server.ts",
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+		"seed": "tsc && node dist/db/seed.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/bcryptjs": "^3.0.0",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/node": "^24.1.0",
+		"@types/pg": "^8.15.4",
+		"nodemon": "^3.1.10",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"@types/bcrypt": "^6.0.0",
+		"bcrypt": "^6.0.0",
+		"bcryptjs": "^3.0.2",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.1",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"pg": "^8.16.3"
+	}
 }

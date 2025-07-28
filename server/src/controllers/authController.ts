@@ -1,0 +1,63 @@
+import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcrypt";
+import { query } from "../db/index.js";
+import { createJWT, JWTPayload } from "../utils/token.js";
+
+interface LoginRequestBody {
+	email: string;
+	password: string;
+}
+
+interface UserRow {
+	id: number;
+	email: string;
+	password: string;
+}
+
+export async function login(
+	req: Request<{}, {}, LoginRequestBody>,
+	res: Response,
+	next: NextFunction
+): Promise<void> {
+	try {
+		const { email, password: candidate } = req.body;
+
+		const result = await query<UserRow>(
+			"SELECT id, email, password FROM users WHERE email = $1",
+			[email]
+		);
+
+		if (result.rowCount === 0) {
+			res.status(401).json({ message: "Invalid email or password" });
+			return;
+		}
+
+		const { id, password } = result.rows[0];
+
+		const match = await bcrypt.compare(candidate, password);
+
+		if (!match) {
+			res.status(401).json({ message: "Invalid email or password" });
+			return;
+		}
+
+		const payload: JWTPayload = { userId: id.toString() };
+
+		const token = createJWT(payload);
+
+		res.status(200).json({
+			token,
+			user: { id, email },
+		});
+	} catch (err) {
+		next(err);
+	}
+}
+
+/**
+ * POST /api/auth/logout
+ * (Stateless JWT: klienten tar bort token själv)
+ */
+export function logout(req: Request, res: Response): Response {
+	return res.status(200).json({ message: "Utloggad" });
+}

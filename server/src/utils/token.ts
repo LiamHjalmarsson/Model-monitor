@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "../config/config";
+import config from "../config/config.js";
 
 export interface JWTPayload extends JwtPayload {
 	userId: string;

@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import config from "./config/config.js";
 import app from "./app.js";
+import authRoute from "./routes/authRoutes.js";
+
+app.use("/api/auth", authRoute);
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, TypeScript + Node.js + Express!");

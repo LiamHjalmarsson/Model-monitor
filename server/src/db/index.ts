@@ -1,16 +1,25 @@
-import { Pool } from "pg";
-import config from "../config/config";
+import { Pool, PoolConfig, QueryResult, QueryResultRow } from "pg";
+import config from "../config/config.js";
 
-const pool = new Pool({
-	user: config.pgUser || "postgres",
-	host: config.pgHost || "localhost",
-	database: config.pgDb || "model_monitor",
-	password: config.pgPassword || "password",
-	port: config.pgPort || 5432,
-});
+const poolConfig: PoolConfig = {
+	user: config.pgUser,
+	host: config.pgHost,
+	database: config.pgDb,
+	password: config.pgPassword,
+	port: config.pgPort,
+};
 
-export async function query(text: string, params?: unknown[]) {
-	return pool.query(text, params);
+const pool = new Pool(poolConfig);
+
+/**
+ * A simple helper around `pool.query` that lets callers pick the row type.
+ * Constrain T so it satisfies pg’s QueryResultRow requirement.
+ */
+export async function query<T extends QueryResultRow = any>(
+	text: string,
+	params: any[] = []
+): Promise<QueryResult<T>> {
+	return pool.query<T>(text, params);
 }
 
 export default pool;
