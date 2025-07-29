@@ -5,6 +5,9 @@ interface AuthenticatedRequest extends Request {
 	userId?: number;
 }
 
+/**
+ * Controlles if user has primession
+ */
 export default function authMiddleware(
 	req: AuthenticatedRequest,
 	res: Response,

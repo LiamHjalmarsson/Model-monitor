@@ -12,8 +12,7 @@ const poolConfig: PoolConfig = {
 const pool = new Pool(poolConfig);
 
 /**
- * A simple helper around `pool.query` that lets callers pick the row type.
- * Constrain T so it satisfies pg’s QueryResultRow requirement.
+ * Helper around `pool.query` that lets callers pick the row type.
  */
 export async function query<T extends QueryResultRow = any>(
 	text: string,

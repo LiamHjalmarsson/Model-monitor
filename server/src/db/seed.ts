@@ -27,7 +27,7 @@ async function seed() {
 			`INSERT INTO users (email, password) VALUES 
 			('test@example.com', $1),
 			('admin@example.com', $1)`,
-			[hashed]
+			[ hashed ]
 		);
 
 		// Create brands
@@ -80,7 +80,6 @@ async function seed() {
 			(2, 0, 1)
 		`);
 
-		console.log("✅ Seed successful!");
 		process.exit(0);
 	} catch (err) {
 		console.error("❌ Seed failed:", err);
