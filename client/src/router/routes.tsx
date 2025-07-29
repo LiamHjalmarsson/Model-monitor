@@ -1,0 +1,24 @@
+import { createBrowserRouter } from "react-router-dom";
+import Login from "../pages/auth/Login";
+import Dashboard from "../pages/Dashboard";
+import NotFounnd from "../pages/error/NotFound";
+import Brand from "../pages/brand/Brand";
+
+export const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <Dashboard />,
+	},
+	{
+		path: "/login",
+		element: <Login />,
+	},
+	{
+		path: "/brands/:brandId",
+		element: <Brand />,
+	},
+	{
+		path: "*",
+		element: <NotFounnd />,
+	},
+]);

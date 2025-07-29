@@ -1,11 +1,68 @@
 @import "tailwindcss";
 
-@theme {  
-    --font-display: "Satoshi", "sans-serif";  
-    
-    --breakpoint-3xl: 120rem;  
-    
-    --color-avocado-100: oklch(0.99 0 0);  
-    --color-avocado-200: oklch(0.98 0.04 113.22);  
-    --color-avocado-300: oklch(0.94 0.11 115.03);
+@theme {
+	/* COLORS */
+	--color-primary-100: #ebccd2;
+	--color-primary-300: #d18998;
+	--color-primary-400: #c4687b;
+	--color-primary-500: #ae445a;
+	--color-primary-600: #973b4d;
+	--color-primary-700: #762e3c;
+
+	--color-secondary-100: #fad8bd;
+	--color-secondary-300: #f39f5a;
+	--color-secondary-400: #f08d3d;
+	--color-secondary-500: #ed7512;
+	--color-secondary-600: #c2600f;
+	--color-secondary-700: #984b0b;
+
+	--color-accent-600: #443c97;
+	--color-accent-700: #3b3778;
+	--color-accent-900: #1d1a39;
+
+	--color-black: #232627;
+	--color-dark-gray: #4d4d4d;
+	--color-gray: #6b7280;
+	--color-light-gray: #89939e;
+	--color-silver: #e6ecf4;
+	--color-white: #fbfaff;
+
+	/* Text */
+	--text-body-xl: 20px;
+	--text-body-lg: 18px;
+	--text-body-md: 16px;
+	--text-body-sm: 14px;
+	--text-body-xs: 12px;
+
+	--text-heading-xl: 40px;
+	--text-heading-lg: 36px;
+	--text-heading-md: 32px;
+	--text-heading-sm: 28px;
+	--text-heading-xs: 22px;
+	--text-heading-xxs: 18px;
+
+	/* SHADOW */
+	--shadow-xxl: 0px 14px 28px -10px rgba(35, 38, 39, 0.16);
+	--shadow-xl: 0px 12px 24px -8px rgba(35, 38, 39, 0.14);
+	--shadow-lg: 0px 8px 16px -6px rgba(35, 38, 39, 0.12);
+	--shadow-md: 0px 6px 12px -4px rgba(35, 38, 39, 0.1);
+	--shadow-sm: 0px 4px 8px -2px rgba(35, 38, 39, 0.08);
+	--shadow-xs: 0px 2px 4px 0px rgba(35, 38, 39, 0.06);
+	--shadow-middle: 0px 0px 28px -4px rgba(35, 38, 39, 0.3);
+
+	/* SPACING */
+	--spacing-xxxs: 2px;
+	--spacing-xxs: 4px;
+	--spacing-xs: 8px;
+	--spacing-sm: 12px;
+	--spacing-md: 16px;
+	--spacing-lg: 24px;
+	--spacing-xl: 32px;
+	--spacing-xxl: 40px;
+}
+
+body {
+	background-color: var(--color-white);
+	font-family: var(--font-body);
+	color: var(--color-neutral);
 }
