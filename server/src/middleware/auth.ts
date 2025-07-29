@@ -6,7 +6,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 /**
- * Controlles if user has primession
+ * Middleware to verify JWT token and attach userId to request.
  */
 export default function authMiddleware(
 	req: AuthenticatedRequest,

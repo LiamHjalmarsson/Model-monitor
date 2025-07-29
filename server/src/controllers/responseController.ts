@@ -25,8 +25,8 @@ export async function getResponsesForBrand(
 
 		const { rows } = await query(
 			`SELECT * FROM responses
-			 WHERE created_by = $1 AND brand_id = $2
-			 ORDER BY created_at ASC`,
+				WHERE created_by = $1 AND brand_id = $2
+			 	ORDER BY created_at ASC`,
 			[userId, brand_id]
 		);
 
@@ -54,6 +54,36 @@ export async function getResponseById(req: Request, res: Response) {
 	}
 }
 
+export async function getUserOwnedResponseById(
+	req: AuthenticatedRequest,
+	res: Response
+) {
+	const id = Number(req.params.id);
+
+	const userId = req.userData?.id;
+
+	try {
+		const result = await query(
+			`SELECT r.*
+		 		FROM responses r
+		 		JOIN brands b ON r.brand_id = b.id
+				WHERE r.id = $1
+		  		AND b.created_by = $2`,
+			[id, userId]
+		);
+
+		if (result.rowCount === 0) {
+			return res
+				.status(404)
+				.json({ message: "Response not found or not authorized" });
+		}
+
+		res.json(result.rows[0]);
+	} catch (err) {
+		res.status(500).json({ message: "Server error" });
+	}
+}
+
 export async function createResponse(req: AuthenticatedRequest, res: Response) {
 	try {
 		const { brand_id } = req.params;
@@ -75,7 +105,7 @@ export async function createResponse(req: AuthenticatedRequest, res: Response) {
 
 		const result = await query(
 			`INSERT INTO responses (brand_id, created_by, content)
-			 VALUES ($1, $2, $3) RETURNING *`,
+			 	VALUES ($1, $2, $3) RETURNING *`,
 			[brand_id, userId, aiContent]
 		);
 
@@ -93,16 +123,16 @@ export async function generateAIResponse(
 
 	const userId = req.userData?.id;
 
-	const check = await query<{ id: number }>(
-		`SELECT id FROM brands WHERE id = $1 AND created_by = $2`,
-		[brandId, userId]
-	);
+	// const check = await query<{ id: number }>(
+	// 	`SELECT id FROM brands WHERE id = $1 AND created_by = $2`,
+	// 	[brandId, userId]
+	// );
 
-	if (check.rowCount === 0) {
-		return res
-			.status(403)
-			.json({ message: "Not authorized to generate for this brand" });
-	}
+	// if (check.rowCount === 0) {
+	// 	return res
+	// 		.status(403)
+	// 		.json({ message: "Not authorized to generate for this brand" });
+	// }
 
 	try {
 		const { rows } = await query<{ prompt: string }>(
@@ -123,15 +153,11 @@ export async function generateAIResponse(
 			throw new Error("No content from OpenAI");
 		}
 
-		const insert = await query<{
-			id: number;
-			content: string;
-			created_at: string;
-		}>(
-			`INSERT INTO responses (brand_id, content)
-         VALUES ($1, $2)
-       RETURNING id, content, created_at`,
-			[brandId, aiContent]
+		const insert = await query(
+			`INSERT INTO responses (brand_id, content, created_by)
+				VALUES ($1, $2, $3)
+				RETURNING id, content, created_at`,
+			[brandId, aiContent, userId]
 		);
 
 		res.status(201).json(insert.rows[0]);

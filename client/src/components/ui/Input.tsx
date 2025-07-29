@@ -1,4 +1,3 @@
-import type { FC } from "react";
 import { useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -7,36 +6,38 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: string;
 }
 
-const Input: FC<InputProps> = ({ name, label, error, ...rest }) => {
+export default function Input({ name, label, error, ...rest }: InputProps) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const isLabelMoved = isFocused || !!rest.value;
 
 	return (
-		<div className="mb-4">
-			<div className="relative rounded-md border border-white/30 bg-white/10 backdrop-filter backdrop-blur-md shadow-md">
+		<div>
+			<div className="relative border border-md border-primary-500 rounded-md">
 				<label
 					htmlFor={name}
-					className={`absolute left-4 px-1 transition-all duration-300 text-gray-800 z-10 bg-white/10 pointer-events-none ${
+					className={`absolute  px-xxs left-6 transition-all duration-300 text-gray-800 z-10 cursor-pointer font-medium ${
 						isLabelMoved
-							? "top-0 -translate-y-4 text-sm"
+							? "top-0 -translate-y-6 -translate-x-2 text-sm"
 							: "top-1/2 -translate-y-1/2"
 					}`}
 				>
 					{label}
 				</label>
+
 				<input
 					id={name}
 					name={name}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
-					className="w-full bg-transparent px-4 py-3 pr-12 outline-none text-gray-800"
+					className="w-full bg-white rounded-lg px-6 py-3 outline-none text-gray-800 pr-12"
 					{...rest}
 				/>
 			</div>
-			{error && <p className="text-red-500 text-sm mt-1 pl-1">{error}</p>}
+
+			{error && (
+				<p className="text-red-500 pl-sm text-sm mt-1">{error}</p>
+			)}
 		</div>
 	);
-};
-
-export default Input;
+}

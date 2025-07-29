@@ -3,26 +3,21 @@ import { Request, Response, NextFunction } from "express";
 import { query } from "../db/index.js";
 import { generateToken } from "../utils/token.js";
 
-interface LoginRequestBody {
-	email: string;
-	password: string;
-}
-
-interface UserRow {
+interface User {
 	id: number;
 	email: string;
 	password: string;
 }
 
 export async function login(
-	req: Request<{}, {}, LoginRequestBody>,
+	req: Request,
 	res: Response,
 	next: NextFunction
 ): Promise<void> {
 	try {
 		const { email, password: candidate } = req.body;
 
-		const result = await query<UserRow>(
+		const result = await query<User>(
 			"SELECT id, email, password FROM users WHERE email = $1",
 			[email]
 		);

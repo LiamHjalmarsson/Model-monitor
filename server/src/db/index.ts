@@ -12,7 +12,9 @@ const poolConfig: PoolConfig = {
 const pool = new Pool(poolConfig);
 
 /**
- * Helper around `pool.query` that lets callers pick the row type.
+ * Helper for running typed SQL queries using pg.
+ * Exempel:
+ * const result = await query<User>("SELECT * FROM users WHERE id = $1", [id]);
  */
 export async function query<T extends QueryResultRow = any>(
 	text: string,

@@ -16,13 +16,14 @@ export async function getRatings(req: AuthenticatedRequest, res: Response) {
 				FROM ratings r
 				JOIN responses res ON r.response_id = res.id
 				JOIN brands b ON res.brand_id = b.id
-			WHERE b.created_by = $1
+				WHERE b.created_by = $1
 		`;
 
 		const params: any[] = [userId];
 
 		if (responseId) {
 			sql += ` AND r.response_id = $${params.length + 1}`;
+
 			params.push(responseId);
 		}
 
@@ -31,6 +32,7 @@ export async function getRatings(req: AuthenticatedRequest, res: Response) {
 		res.json(result.rows);
 	} catch (err) {
 		console.error("Error fetching ratings:", err);
+
 		res.status(500).json({ message: "Server error" });
 	}
 }
@@ -47,7 +49,7 @@ export async function getRatingById(req: AuthenticatedRequest, res: Response) {
 				FROM ratings r
 				JOIN responses res ON r.response_id = res.id
 				JOIN brands b ON res.brand_id = b.id
-			WHERE r.id = $1
+				WHERE r.id = $1
 				AND b.created_by = $2
 		`,
 			[id, userId]
@@ -92,7 +94,7 @@ export async function createRating(req: AuthenticatedRequest, res: Response) {
 
 		const { rows } = await query(
 			`INSERT INTO ratings (response_id, rating, user_id)
-			 VALUES ($1, $2, $3) RETURNING *`,
+			 	VALUES ($1, $2, $3) RETURNING *`,
 			[responseId, rating, userId]
 		);
 
@@ -105,7 +107,9 @@ export async function createRating(req: AuthenticatedRequest, res: Response) {
 export async function updateRating(req: AuthenticatedRequest, res: Response) {
 	try {
 		const { id } = req.params;
+
 		const { rating } = req.body;
+
 		const userId = req.userId;
 
 		if (!userId) {

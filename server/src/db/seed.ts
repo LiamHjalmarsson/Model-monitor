@@ -12,7 +12,6 @@ async function seed() {
 		await db.query(`DROP TABLE IF EXISTS users CASCADE`);
 
 		// Create Users
-
 		await db.query(`
 			CREATE TABLE users (
 				id SERIAL PRIMARY KEY,
@@ -27,7 +26,7 @@ async function seed() {
 			`INSERT INTO users (email, password) VALUES 
 			('test@example.com', $1),
 			('admin@example.com', $1)`,
-			[ hashed ]
+			[hashed]
 		);
 
 		// Create brands
@@ -82,7 +81,7 @@ async function seed() {
 
 		process.exit(0);
 	} catch (err) {
-		console.error("❌ Seed failed:", err);
+		console.error("Seed failed:", err);
 		process.exit(1);
 	}
 }

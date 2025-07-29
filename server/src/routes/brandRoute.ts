@@ -4,7 +4,7 @@ import {
 	createBrand,
 	updateBrand,
 	deleteBrand,
-	getResponseById,
+	getResponsesForBrand,
 } from "../controllers/brandController.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -16,7 +16,7 @@ router.get("/", getBrands);
 
 router.post("/", createBrand);
 
-router.get("/:id", getResponseById);
+router.get("/:id/responses", getResponsesForBrand);
 
 router.put("/:id", updateBrand);
 
