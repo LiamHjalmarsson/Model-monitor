@@ -1,4 +1,5 @@
 import api from "./axios";
+import type { ResponseItem } from "./response";
 
 export interface Brand {
 	id: string;
@@ -12,14 +13,16 @@ export async function getBrands(): Promise<Brand[]> {
 	return res.data;
 }
 
-export async function fetchBrand(id: string): Promise<Brand> {
-	const res = await api.get(`/brands/${id}`);
+export async function createBrand(data: Partial<Brand>): Promise<Brand> {
+	const res = await api.post("/brands", data);
 
 	return res.data;
 }
 
-export async function createBrand(data: Partial<Brand>): Promise<Brand> {
-	const res = await api.post("/brands", data);
+export async function getResponsesForBrand(
+	brandId: string
+): Promise<ResponseItem[]> {
+	const res = await api.get(`/brands/${brandId}/responses`);
 
 	return res.data;
 }

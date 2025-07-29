@@ -3,7 +3,7 @@ import api from "./axios";
 export interface Rating {
 	id: string;
 	responseId: string;
-	value: "up" | "down";
+	rating: 0 | 1;
 	userId: string;
 	createdAt: string;
 }
@@ -22,18 +22,15 @@ export async function getRatingById(id: string): Promise<Rating> {
 
 export async function createRating(
 	responseId: string,
-	value: "up" | "down"
+	value: 0 | 1
 ): Promise<Rating> {
-	const res = await api.post("/ratings", { responseId, value });
+	const res = await api.post("/ratings", { responseId, rating: value });
 
 	return res.data;
 }
 
-export async function updateRating(
-	id: string,
-	value: "up" | "down"
-): Promise<Rating> {
-	const res = await api.put(`/ratings/${id}`, { value });
+export async function updateRating(id: string, value: 0 | 1): Promise<Rating> {
+	const res = await api.put(`/ratings/${id}`, { rating: value });
 
 	return res.data;
 }

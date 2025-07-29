@@ -5,6 +5,7 @@ import {
 	getResponseById,
 	createResponse,
 	generateAIResponse,
+	getUserOwnedResponseById,
 } from "../api/response";
 import { createRating, updateRating } from "../api/rating";
 
@@ -15,11 +16,12 @@ interface ResponseStore {
 
 	getResponsesForBrand: (brandId: string) => Promise<void>;
 	getResponseById: (id: string) => Promise<void>;
+	getUserOwnedResponseById: (id: string) => Promise<void>;
 	createResponse: (brandId: string) => Promise<void>;
 	generateAIResponse: (brandId: string) => Promise<void>;
 	rateResponse: (
 		responseId: string,
-		rating: "up" | "down",
+		rating: 0 | 1,
 		ratingId?: string
 	) => Promise<void>;
 	clearResponses: () => void;
@@ -42,6 +44,14 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 		set({ loading: true });
 
 		const data = await getResponseById(id);
+
+		set({ currentResponse: data, loading: false });
+	},
+
+	getUserOwnedResponseById: async (id) => {
+		set({ loading: true });
+
+		const data = await getUserOwnedResponseById(id);
 
 		set({ currentResponse: data, loading: false });
 	},
@@ -70,7 +80,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 		set((state) => ({
 			responses: state.responses.map((response) =>
 				response.id === rated.responseId
-					? { ...response, rating: rated.value }
+					? { ...response, rating: rated.rating }
 					: response
 			),
 		}));

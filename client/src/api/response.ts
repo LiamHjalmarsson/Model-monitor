@@ -2,10 +2,10 @@ import api from "./axios";
 
 export interface ResponseItem {
 	id: string;
-	text: string;
-	createdAt: string;
-	rating: "up" | "down" | null;
-	brandId: string;
+	content: string;
+	created_at: string;
+	brand_id: string;
+	created_by?: number;
 }
 
 export async function getResponsesForBrand(
@@ -18,6 +18,14 @@ export async function getResponsesForBrand(
 
 export async function getResponseById(id: string): Promise<ResponseItem> {
 	const res = await api.get(`/responses/${id}`);
+
+	return res.data;
+}
+
+export async function getUserOwnedResponseById(
+	id: string
+): Promise<ResponseItem> {
+	const res = await api.get(`/responses/owned/${id}`);
 
 	return res.data;
 }
