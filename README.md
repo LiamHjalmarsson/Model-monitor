@@ -1,4 +1,4 @@
-# 🧠 Model Monitor
+# Model Monitor
 
 **Model Monitor** is a fullstack web application that allows users to create brands, generate AI responses with OpenAI, and rate those responses. The app includes user authentication, protected API routes, and a modern frontend with Zustand and TailwindCSS.
 
@@ -42,7 +42,7 @@
 -   POSTGRES_PORT=5432
 -   POSTGRES_USER=postgres
 -   POSTGRES_PASSWORD=yourpassword
--   POSTGRES_DB=model_monitor
+-   POSTGRES_DB=db
 
 -   OPENAI_API_KEY=your_openai_api_key
 

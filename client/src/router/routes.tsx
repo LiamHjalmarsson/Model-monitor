@@ -14,8 +14,14 @@ export const router = createBrowserRouter([
 		path: "/",
 		element: <PrivateLayout />,
 		children: [
-			{ path: "", element: <Dashboard /> },
-			{ path: "brands/:brandId", element: <Brand /> },
+			{
+				path: "",
+				element: <Dashboard />,
+			},
+			{
+				path: "brands/:brandId",
+				element: <Brand />,
+			},
 		],
 	},
 	{
