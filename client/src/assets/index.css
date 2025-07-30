@@ -66,3 +66,9 @@ body {
 	font-family: var(--font-body);
 	color: var(--color-neutral);
 }
+
+@layer utilities {
+	.glass-input {
+		@apply backdrop-blur-lg bg-white/30 border border-white/20 shadow-inner;
+	}
+}

@@ -14,6 +14,8 @@ const Login: FC = () => {
 
 	const [error, setError] = useState("");
 
+	const [loading, setLoading] = useState(false);
+
 	const navigate = useNavigate();
 
 	const loginStore = useAuthStore((state) => state.login);
@@ -22,6 +24,9 @@ const Login: FC = () => {
 		e.preventDefault();
 
 		setError("");
+
+		setLoading(true);
+
 		try {
 			const { token, user } = await login(email, password);
 
@@ -30,8 +35,10 @@ const Login: FC = () => {
 			navigate("/");
 		} catch (err) {
 			const axiosErr = err as AxiosError<{ message: string }>;
-
+			
 			setError(axiosErr.response?.data?.message || "Login failed");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -39,19 +46,19 @@ const Login: FC = () => {
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-fuchsia-600 to-cyan-600 px-4">
 			<div
 				className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 opacity-25"
-				style={{
-					backgroundImage: `url('/bg.png')`,
-				}}
+				style={{ backgroundImage: `url('/bg.png')` }}
 			/>
-			<div className="w-full max-w-[450px] p-xxl space-y-xxl rounded-xl bg-blue-200/30 border border-white/30 backdrop-blur-3xlshadow-lg drop-shadow-lg backdrop-filter z-10">
+			<div className="w-full max-w-[450px] p-xxl space-y-xxl rounded-xl bg-blue-200/30 border border-white/30 backdrop-blur-3xl shadow-lg z-10">
 				<div className="text-center">
-					<h1 className="text-heading-lg font-bold text-black">
-						Login
-					</h1>
-					<p className="text-gray-dark text-lg font-semibold mt-xs">
-						Welcome back!
-					</p>
+					<h1 className="text-heading-lg font-bold text-black">Login</h1>
+					<p className="text-gray-dark text-lg font-semibold mt-xs">Welcome back!</p>
 				</div>
+
+				{error && (
+					<div className="text-red-700 bg-red-100 border border-red-300 rounded-lg px-md py-sm text-center">
+						{error}
+					</div>
+				)}
 
 				<form onSubmit={handleSubmit} className="space-y-xl">
 					<Input
@@ -62,6 +69,7 @@ const Login: FC = () => {
 						onChange={(e) => setEmail(e.target.value)}
 						autoComplete="email"
 						error={error}
+						className="glass-input"
 					/>
 
 					<Input
@@ -71,13 +79,17 @@ const Login: FC = () => {
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						autoComplete="current-password"
+						className="glass-input"
 					/>
 
-					<div className="flex justify-center px-md text-gray-dark text-center font-medium">
+					<div className="flex justify-center text-sm text-gray-600 font-medium cursor-pointer hover:underline">
 						Forgot password?
 					</div>
 
-					<PrimaryButton label="Login" type="submit" />
+					<PrimaryButton
+						label={loading ? "Logging in..." : "Login"}
+						type="submit"
+					/>
 				</form>
 			</div>
 		</div>

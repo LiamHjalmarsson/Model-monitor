@@ -7,25 +7,24 @@ import PrivateLayout from "../layouts/Private";
 
 export const router = createBrowserRouter([
 	{
+		path: "/",
+		element: (
+			<Dashboard />
+		),
+	},
+	{
 		path: "/login",
 		element: <Login />,
 	},
 	{
-		path: "/",
-		element: <PrivateLayout />,
-		children: [
-			{
-				path: "",
-				element: <Dashboard />,
-			},
-			{
-				path: "brands/:brandId",
-				element: <Brand />,
-			},
-		],
+		path: "/brands/:brandId",
+		element: (
+			<Brand />
+		),
 	},
 	{
 		path: "*",
 		element: <NotFound />,
 	},
 ]);
+
