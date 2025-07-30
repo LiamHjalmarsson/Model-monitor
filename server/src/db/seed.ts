@@ -49,7 +49,7 @@ async function seed() {
 		await db.query(`
 			CREATE TABLE responses (
 				id SERIAL PRIMARY KEY,
-				brand_id INTEGER REFERENCES brands(id),
+				brand_id INTEGER REFERENCES brands(id) ON DELETE CASCADE,
 				created_by INTEGER REFERENCES users(id),
 				content TEXT NOT NULL,
 				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -66,7 +66,7 @@ async function seed() {
 		await db.query(`
 			CREATE TABLE ratings (
 				id SERIAL PRIMARY KEY,
-				response_id INTEGER REFERENCES responses(id),
+				response_id INTEGER REFERENCES responses(id) ON DELETE CASCADE,
 				rating INTEGER CHECK (rating IN (0, 1)),
 				user_id INTEGER REFERENCES users(id),
 				CONSTRAINT unique_user_response UNIQUE (user_id, response_id)

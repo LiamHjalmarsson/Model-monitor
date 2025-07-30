@@ -2,12 +2,19 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import Button from "../ui/Button";
 
-interface CreateBrandModalProps {
+interface BrandModalProps {
 	onClose: () => void;
 	onSubmit: (data: { name: string; prompt: string }) => Promise<void>;
+	initialData?: { name: string; prompt: string };
+	title?: string;
 }
 
-export function CreateBrandModal({ onClose, onSubmit }: CreateBrandModalProps) {
+export function BrandModal({
+	onClose,
+	onSubmit,
+	initialData,
+	title = "Create New Brand",
+}: BrandModalProps) {
 	const [formData, setFormData] = useState({ name: "", prompt: "" });
 
 	const [error, setError] = useState("");
@@ -64,7 +71,7 @@ export function CreateBrandModal({ onClose, onSubmit }: CreateBrandModalProps) {
 				className="bg-black text-white rounded-2xl max-w-[450px] w-full p-8 relative shadow-2xl transform transition-transform duration-300 scale-100"
 			>
 				<div className="flex justify-between items-center mb-xl">
-					<h2 className="text-2xl font-bold">Create New Brand</h2>
+					<h2 className="text-2xl font-bold">{title}</h2>
 
 					<button
 						onClick={onClose}

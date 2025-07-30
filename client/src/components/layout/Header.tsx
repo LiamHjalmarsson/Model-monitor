@@ -1,27 +1,27 @@
-import { useAuthStore } from "../../store/auth";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
-export default function Header() {
-	const userEmail = useAuthStore((state) => state.userEmail);
-	const logout = useAuthStore((state) => state.logout);
-	const navigate = useNavigate();
+interface HeaderProps {
+	title: string;
+	subtitle?: string;
+	children?: React.ReactNode;
+}
 
-	const handleLogout = () => {
-		logout();
-		navigate("/login");
-	};
-
+export default function Header({ title, subtitle, children }: HeaderProps) {
 	return (
-		<div className="flex items-center justify-between">
-			<h1 className="text-2xl font-bold text-white">
-				Welcome, {userEmail}
-			</h1>
-			<button
-				onClick={handleLogout}
-				className="px-4 py-2 bg-white/20 backdrop-filter backdrop-blur-sm rounded-md text-white hover:bg-white/30"
-			>
-				Logout
-			</button>
+		<div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+			<div>
+				<h1 className="text-4xl font-extrabold text-gray-900 mb-2">
+					{title}
+				</h1>
+				{subtitle && (
+					<p className="text-lg text-gray-600 whitespace-pre-wrap">
+						{subtitle}
+					</p>
+				)}
+			</div>
+			{children && (
+				<div className="mt-4 sm:mt-0 flex gap-3">{children}</div>
+			)}
 		</div>
 	);
 }

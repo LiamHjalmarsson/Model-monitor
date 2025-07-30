@@ -6,7 +6,8 @@ import { BrandCard } from "../components/brand/Card";
 import { CreateBrandButton } from "../components/brand/CreateButton";
 import StatSection from "../components/dashboard/Stats";
 import { LatestBrandPreview } from "../components/brand/LatestPreview";
-import { CreateBrandModal } from "../components/brand/CrateBrandModal";
+import { BrandModal } from "../components/brand/BrandModal";
+import Header from "../components/layout/Header";
 
 export default function Dashboard() {
 	const { brands, getBrands, createBrand } = useBrandStore();
@@ -27,12 +28,10 @@ export default function Dashboard() {
 			<Sidebar />
 
 			<main className="flex-1 p-xl">
-				<header className="mb-xl">
-					<h1 className="text-3xl font-bold mb-xs">Dashboard</h1>
-					<p className="text-gray-dark">
-						Overview of your brands and performance
-					</p>
-				</header>
+				<Header
+					title="Dashboard"
+					subtitle="Overview of your brands and performance"
+				/>
 
 				<section>
 					<h2 className="text-xl font-semibold text-gray-dark mb-md">
@@ -55,7 +54,7 @@ export default function Dashboard() {
 				{latest && <LatestBrandPreview brand={latest} />}
 
 				{showModal && (
-					<CreateBrandModal
+					<BrandModal
 						onClose={() => setShowModal(false)}
 						onSubmit={handleCreate}
 					/>

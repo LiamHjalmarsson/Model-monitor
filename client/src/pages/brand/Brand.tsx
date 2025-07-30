@@ -3,28 +3,38 @@ import { useParams } from "react-router-dom";
 import { Sidebar } from "../../components/layout/Sidebar";
 import { useBrandStore } from "../../store/brand";
 import { useResponseStore } from "../../store/response";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { BrandModal } from "../../components/brand/BrandModal";
+import Button from "../../components/ui/Button";
+import ResponseCard from "../../components/response/Card";
+import Header from "../../components/layout/Header";
+import { deleteBrand } from "../../api/brand";
+import { useNavigate } from "react-router-dom";
 
 export default function BrandPage() {
 	const { brandId } = useParams<{ brandId: string }>();
 
-	const brandIdNum = Number(brandId);
+	const numberId = Number(brandId);
 
-	const { brands, getBrands, getResponsesForBrand } = useBrandStore();
+	const { brands, getBrands, updateBrand } = useBrandStore();
 
 	const {
 		responses,
 		clearResponses,
-		rateResponse,
+		getResponsesForBrand,
 		createResponse,
 		generateAIResponse,
+		rateResponse,
 	} = useResponseStore();
-
-	const [error, setError] = useState("");
 
 	const [loading, setLoading] = useState(false);
 
-	const brand = brands.find((brand) => brand.id === Number(brandId));
+	const [error, setError] = useState("");
+
+	const [showEditModal, setShowEditModal] = useState(false);
+
+	const brand = brands.find((b) => b.id === numberId);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getBrands();
@@ -32,7 +42,7 @@ export default function BrandPage() {
 
 	useEffect(() => {
 		if (brandId) {
-			getResponsesForBrand(brandIdNum);
+			getResponsesForBrand(numberId);
 		}
 		return () => {
 			clearResponses();
@@ -40,14 +50,14 @@ export default function BrandPage() {
 	}, [brandId]);
 
 	const handleCreate = async () => {
-		if (!brandId) return;
 		setLoading(true);
+
 		setError("");
 
 		try {
-			await createResponse(brandIdNum);
+			await createResponse(numberId);
 
-			await getResponsesForBrand(brandIdNum);
+			await getResponsesForBrand(numberId);
 		} catch {
 			setError("Failed to create response");
 		}
@@ -55,15 +65,13 @@ export default function BrandPage() {
 	};
 
 	const handleGenerate = async () => {
-		if (!brandId) return;
 		setLoading(true);
 
 		setError("");
-
 		try {
-			await generateAIResponse(brandIdNum);
+			await generateAIResponse(numberId);
 
-			await getResponsesForBrand(brandIdNum);
+			await getResponsesForBrand(numberId);
 		} catch {
 			setError("Failed to generate AI response");
 		}
@@ -78,69 +86,79 @@ export default function BrandPage() {
 		}
 	};
 
+	const handleUpdateBrand = async (data: {
+		name: string;
+		prompt: string;
+	}) => {
+		await updateBrand(numberId, data);
+
+		await getBrands();
+
+		setShowEditModal(false);
+	};
+
+	const handleDelete = async () => {
+		try {
+			await deleteBrand(numberId);
+
+			navigate("/");
+		} catch (err) {
+			setError("Failed to delete brand.");
+		}
+	};
+
 	return (
 		<div className="flex min-h-screen bg-gray-50">
 			<Sidebar />
-
 			<main className="flex-1 p-8">
-				<header className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-800">
-						{brand ? brand.name : "Brand"}
-					</h1>
-					<p className="text-gray-500 text-sm mt-1">
-						All AI-generated responses for this brand
-					</p>
-				</header>
+				<Header
+					title={brand ? brand.name : "Brand"}
+					subtitle={brand ? brand.prompt : "Promt"}
+				>
+					{brand && (
+						<div className="flex space-x-xl">
+							<button
+								onClick={() => setShowEditModal(true)}
+								className="text-sm px-md py-sm rounded-md border-blue-500 border text-blue-500 hover:bg-primary-100/50 cursor-pointer"
+							>
+								Edit Brand
+							</button>
+							<button
+								onClick={handleDelete}
+								className="text-sm px-md py-sm rounded-md border-red-500 border text-red-500 hover:bg-primary-100/50 cursor-pointer"
+							>
+								Delete Brand
+							</button>
+						</div>
+					)}
+				</Header>
 
 				<div className="flex gap-4 mb-6">
-					<button
+					<Button
 						onClick={handleCreate}
 						disabled={loading}
-						className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-md"
+						variant="secondary"
 					>
-						Create dummy response
-					</button>
-					<button
+						Create Dummy Response
+					</Button>
+					<Button
 						onClick={handleGenerate}
 						disabled={loading}
-						className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+						className="bg-primary-500 hover:bg-primary-600 text-white px-md py-sm rounded-md cursor-pointer"
 					>
-						Generate AI response
-					</button>
+						Generate AI Response
+					</Button>
 				</div>
 
 				{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-				<section className="space-y-4">
+				<section className="space-y-xl">
 					{responses.map((res) => (
-						<div
+						<ResponseCard
 							key={res.id}
-							className="bg-white p-4 rounded-lg shadow border hover:border-blue-500 transition"
-						>
-							<p className="text-gray-800 whitespace-pre-wrap">
-								{res.content}
-							</p>
-							<p className="text-xs text-gray-400 mt-2">
-								{new Date(res.created_at).toLocaleString()}
-							</p>
-
-							<div className="mt-4 flex gap-3 text-sm items-center">
-								<button
-									onClick={() => handleRate(res.id, 1)}
-									className="flex items-center gap-1 text-green-600 hover:underline"
-								>
-									<FaThumbsUp />
-									Like
-								</button>
-								<button
-									onClick={() => handleRate(res.id, 0)}
-									className="flex items-center gap-1 text-red-500 hover:underline"
-								>
-									<FaThumbsDown />
-									Dislike
-								</button>
-							</div>
-						</div>
+							response={res}
+							onRate={handleRate}
+						/>
 					))}
 
 					{responses.length === 0 && (
@@ -150,6 +168,14 @@ export default function BrandPage() {
 					)}
 				</section>
 			</main>
+
+			{showEditModal && brand && (
+				<BrandModal
+					title={`Edit brand: ${brand.name}`}
+					onClose={() => setShowEditModal(false)}
+					onSubmit={handleUpdateBrand}
+				/>
+			)}
 		</div>
 	);
 }
