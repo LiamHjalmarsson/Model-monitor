@@ -72,18 +72,36 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 		}));
 	},
 
-	rateResponse: async (responseId, rating, ratingId) => {
-		const rated = ratingId
-			? await updateRating(ratingId, { rating })
-			: await createRating({ responseId, rating });
+	rateResponse: async (responseId, rating) => {
+		try {
+			const rated = await createRating(responseId, rating);
 
-		set((state) => ({
-			responses: state.responses.map((response) =>
-				response.id === rated.response_id
-					? { ...response, rating: rated.rating }
-					: response
-			),
-		}));
+			set((state) => ({
+				responses: state.responses.map((res) =>
+					res.id === rated.response_id
+						? { ...res, rating: rated.rating }
+						: res
+				),
+			}));
+		} catch (err: any) {
+			if (err?.response?.status === 409) {
+				const existing = await getResponseById(responseId);
+
+				if (existing) {
+					const updated = await updateRating(existing.id, rating);
+
+					set((state) => ({
+						responses: state.responses.map((res) =>
+							res.id === updated.response_id
+								? { ...res, rating: updated.rating }
+								: res
+						),
+					}));
+				}
+			} else {
+				console.error("Rating error", err);
+			}
+		}
 	},
 
 	clearResponses: () => {

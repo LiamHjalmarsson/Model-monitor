@@ -37,20 +37,23 @@ export async function getRatingById(id: number): Promise<Rating> {
 /**
  * Create a new rating for a response.
  */
-export async function createRating(input: CreateRatingInput): Promise<Rating> {
-	const { data } = await api.post<Rating>("/ratings", input);
+export async function createRating(
+	responseId: number,
+	rating: 0 | 1
+): Promise<Rating> {
+	const res = await api.post("/ratings", {
+		responseId,
+		rating,
+	});
 
-	return data;
+	return res.data;
 }
 
 /**
  * Update an existing rating.
  */
-export async function updateRating(
-	id: number,
-	input: UpdateRatingInput
-): Promise<Rating> {
-	const { data } = await api.put<Rating>(`/ratings/${id}`, input);
+export async function updateRating(id: number, rating: 0 | 1): Promise<Rating> {
+	const res = await api.put(`/ratings/${id}`, { rating });
 
-	return data;
+	return res.data;
 }

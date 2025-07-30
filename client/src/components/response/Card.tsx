@@ -1,5 +1,6 @@
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import type { ResponseItem } from "../../api/response";
+import { Link } from "react-router-dom";
 
 interface ResponseCardProps {
 	response: ResponseItem;
@@ -34,7 +35,7 @@ export default function ResponseCard({ response, onRate }: ResponseCardProps) {
 				<div className="flex items-center gap-2">
 					<button
 						onClick={() => onRate(response.id, 1)}
-						className={`p-2 rounded-full transition ${
+						className={`p-2 rounded-full transition cursor-pointer ${
 							isLiked
 								? "bg-green-100 text-green-700"
 								: "bg-green-50 text-green-600 hover:bg-green-100"
@@ -45,7 +46,7 @@ export default function ResponseCard({ response, onRate }: ResponseCardProps) {
 					</button>
 					<button
 						onClick={() => onRate(response.id, 0)}
-						className={`p-2 rounded-full transition ${
+						className={`p-2 rounded-full transition cursor-pointer ${
 							isDisliked
 								? "bg-red-100 text-red-700"
 								: "bg-red-50 text-red-600 hover:bg-red-100"
@@ -54,6 +55,13 @@ export default function ResponseCard({ response, onRate }: ResponseCardProps) {
 					>
 						<FaThumbsDown />
 					</button>
+
+					<Link
+						to={`/responses/${response.id}`}
+						className="ml-auto text-blue-600 hover:underline"
+					>
+						View Details
+					</Link>
 				</div>
 			</div>
 		</div>

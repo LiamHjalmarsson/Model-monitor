@@ -8,6 +8,7 @@ import StatSection from "../components/dashboard/Stats";
 import { LatestBrandPreview } from "../components/brand/LatestPreview";
 import { BrandModal } from "../components/brand/BrandModal";
 import Header from "../components/layout/Header";
+import RatingsOverview from "../components/dashboard/Ratings";
 
 export default function Dashboard() {
 	const { brands, getBrands, createBrand } = useBrandStore();
@@ -52,6 +53,8 @@ export default function Dashboard() {
 				/>
 
 				{latest && <LatestBrandPreview brand={latest} />}
+
+				<RatingsOverview />
 
 				{showModal && (
 					<BrandModal
