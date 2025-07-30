@@ -1,8 +1,7 @@
-import type { FC } from "react";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
 
-const Header: FC = () => {
+export default function Header() {
 	const userEmail = useAuthStore((state) => state.userEmail);
 	const logout = useAuthStore((state) => state.logout);
 	const navigate = useNavigate();
@@ -25,6 +24,4 @@ const Header: FC = () => {
 			</button>
 		</div>
 	);
-};
-
-export default Header;
+}

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { logout } from "../api/auth";
 
 export interface AuthState {
 	token: string | null;
@@ -13,8 +14,17 @@ export const useAuthStore = create<AuthState>()(
 		(set) => ({
 			token: null,
 			userEmail: null,
+
 			login: (token, userEmail) => set({ token, userEmail }),
-			logout: () => set({ token: null, userEmail: null }),
+
+			logout: async () => {
+				try {
+					await logout();
+				} catch (err) {
+					console.error("Logout API call failed:", err);
+				}
+				set({ token: null, userEmail: null });
+			},
 		}),
 		{
 			name: "auth-storage",

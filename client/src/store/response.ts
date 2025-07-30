@@ -14,15 +14,15 @@ interface ResponseStore {
 	currentResponse: ResponseItem | null;
 	loading: boolean;
 
-	getResponsesForBrand: (brandId: string) => Promise<void>;
-	getResponseById: (id: string) => Promise<void>;
-	getUserOwnedResponseById: (id: string) => Promise<void>;
-	createResponse: (brandId: string) => Promise<void>;
-	generateAIResponse: (brandId: string) => Promise<void>;
+	getResponsesForBrand: (brandId: number) => Promise<void>;
+	getResponseById: (id: number) => Promise<void>;
+	getUserOwnedResponseById: (id: number) => Promise<void>;
+	createResponse: (brandId: number) => Promise<void>;
+	generateAIResponse: (brandId: number) => Promise<void>;
 	rateResponse: (
-		responseId: string,
+		responseId: number,
 		rating: 0 | 1,
-		ratingId?: string
+		ratingId?: number
 	) => Promise<void>;
 	clearResponses: () => void;
 }
@@ -74,12 +74,12 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 
 	rateResponse: async (responseId, rating, ratingId) => {
 		const rated = ratingId
-			? await updateRating(ratingId, rating)
-			: await createRating(responseId, rating);
+			? await updateRating(ratingId, { rating })
+			: await createRating({ responseId, rating });
 
 		set((state) => ({
 			responses: state.responses.map((response) =>
-				response.id === rated.responseId
+				response.id === rated.response_id
 					? { ...response, rating: rated.rating }
 					: response
 			),

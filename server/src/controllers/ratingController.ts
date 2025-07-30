@@ -27,9 +27,9 @@ export async function getRatings(req: AuthenticatedRequest, res: Response) {
 			params.push(responseId);
 		}
 
-		const result = await query(sql, params);
+		const { rows } = await query(sql, params);
 
-		res.json(result.rows);
+		res.status(200).json(rows);
 	} catch (err) {
 		console.error("Error fetching ratings:", err);
 
@@ -43,7 +43,7 @@ export async function getRatingById(req: AuthenticatedRequest, res: Response) {
 	const userId = req.userId!;
 
 	try {
-		const result = await query(
+		const { rows, rowCount } = await query(
 			`
 			SELECT r.*
 				FROM ratings r
@@ -55,13 +55,13 @@ export async function getRatingById(req: AuthenticatedRequest, res: Response) {
 			[id, userId]
 		);
 
-		if (result.rowCount === 0) {
+		if (rowCount === 0) {
 			return res
 				.status(404)
 				.json({ message: "Rating not found or not authorized" });
 		}
 
-		res.json(result.rows[0]);
+		res.status(200).json(rows[0]);
 	} catch (err) {
 		res.status(500).json({ message: "Server error" });
 	}
@@ -94,7 +94,7 @@ export async function createRating(req: AuthenticatedRequest, res: Response) {
 
 		const { rows } = await query(
 			`INSERT INTO ratings (response_id, rating, user_id)
-			 	VALUES ($1, $2, $3) RETURNING *`,
+  			 VALUES ($1, $2, $3) RETURNING *`,
 			[responseId, rating, userId]
 		);
 
@@ -131,7 +131,7 @@ export async function updateRating(req: AuthenticatedRequest, res: Response) {
 				.json({ message: "Rating not found or unauthorized" });
 		}
 
-		res.json(rows[0]);
+		res.status(201).json(rows[0]);
 	} catch (err) {
 		console.error("Error updating rating:", err);
 		res.status(500).send("Server error");

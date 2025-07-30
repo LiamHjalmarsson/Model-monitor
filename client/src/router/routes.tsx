@@ -8,9 +8,7 @@ import PrivateLayout from "../layouts/Private";
 export const router = createBrowserRouter([
 	{
 		path: "/",
-		element: (
-			<Dashboard />
-		),
+		element: <Dashboard />,
 	},
 	{
 		path: "/login",
@@ -18,13 +16,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/brands/:brandId",
-		element: (
-			<Brand />
-		),
+		element: <Brand />,
 	},
 	{
 		path: "*",
 		element: <NotFound />,
 	},
 ]);
-

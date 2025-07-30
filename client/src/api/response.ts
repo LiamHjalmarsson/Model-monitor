@@ -1,45 +1,67 @@
 import api from "./axios";
 
 export interface ResponseItem {
-	id: string;
+	id: number;
+	brand_id: number;
+	created_by: number;
 	content: string;
 	created_at: string;
-	brand_id: string;
-	created_by?: number;
+	rating?: 0 | 1;
 }
 
+/**
+ * Fetch all responses for a specific brand.
+ */
 export async function getResponsesForBrand(
-	brandId: string
+	brandId: number
 ): Promise<ResponseItem[]> {
-	const res = await api.get(`/responses/brands/${brandId}`);
+	const { data } = await api.get<ResponseItem[]>(
+		`/responses/brands/${brandId}`
+	);
 
-	return res.data;
+	return data;
 }
 
-export async function getResponseById(id: string): Promise<ResponseItem> {
-	const res = await api.get(`/responses/${id}`);
+/**
+ * Fetch a single response by its ID.
+ */
+export async function getResponseById(id: number): Promise<ResponseItem> {
+	const { data } = await api.get<ResponseItem>(`/responses/${id}`);
 
-	return res.data;
+	return data;
 }
 
+/**
+ * Fetch a response owned by the current user.
+ */
 export async function getUserOwnedResponseById(
-	id: string
+	id: number
 ): Promise<ResponseItem> {
-	const res = await api.get(`/responses/owned/${id}`);
+	const { data } = await api.get<ResponseItem>(`/responses/owned/${id}`);
 
-	return res.data;
+	return data;
 }
 
-export async function createResponse(brandId: string): Promise<ResponseItem> {
-	const res = await api.post(`/responses/brands/${brandId}`);
+/**
+ * Create a new random response for a brand.
+ */
+export async function createResponse(brandId: number): Promise<ResponseItem> {
+	const { data } = await api.post<ResponseItem>(
+		`/responses/brands/${brandId}`
+	);
 
-	return res.data;
+	return data;
 }
 
+/**
+ * Generate an AI-driven response for a brand.
+ */
 export async function generateAIResponse(
-	brandId: string
+	brandId: number
 ): Promise<ResponseItem> {
-	const res = await api.post(`/responses/brands/${brandId}/generate`);
+	const { data } = await api.post<ResponseItem>(
+		`/responses/brands/${brandId}/generate`
+	);
 
-	return res.data;
+	return data;
 }

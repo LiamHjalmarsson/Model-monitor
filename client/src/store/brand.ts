@@ -12,9 +12,9 @@ interface BrandStore {
 
 	getBrands: () => Promise<void>;
 	createBrand: (data: Partial<Brand>) => Promise<void>;
-	updateBrand: (id: string, data: Partial<Brand>) => Promise<void>;
-	deleteBrand: (id: string) => Promise<void>;
-	getResponsesForBrand: (id: string) => Promise<void>;
+	updateBrand: (id: number, data: Partial<Brand>) => Promise<void>;
+	deleteBrand: (id: number) => Promise<void>;
+	getResponsesForBrand: (id: number) => Promise<void>;
 }
 
 export const useBrandStore = create<BrandStore>((set) => ({
@@ -48,7 +48,7 @@ export const useBrandStore = create<BrandStore>((set) => ({
 		await deleteBrand(id);
 
 		set((state) => ({
-			brands: state.brands.filter((b) => b.id !== id),
+			brands: state.brands.filter((brand) => brand.id !== id),
 			currentBrand: null,
 			responses: [],
 		}));

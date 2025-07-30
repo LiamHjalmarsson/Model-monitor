@@ -2,42 +2,58 @@ import api from "./axios";
 import type { ResponseItem } from "./response";
 
 export interface Brand {
-	id: string;
+	id: number;
 	name: string;
 	prompt: string;
+	created_by: number;
 }
 
+/**
+ * Fetch all brands.
+ */
 export async function getBrands(): Promise<Brand[]> {
-	const res = await api.get("/brands");
+	const { data } = await api.get<Brand[]>("/brands");
 
-	return res.data;
+	return data;
 }
 
-export async function createBrand(data: Partial<Brand>): Promise<Brand> {
-	const res = await api.post("/brands", data);
-
-	return res.data;
-}
-
+/**
+ * Fetch responses for a specific brand.
+ */
 export async function getResponsesForBrand(
-	brandId: string
+	brandId: number
 ): Promise<ResponseItem[]> {
-	const res = await api.get(`/brands/${brandId}/responses`);
+	const { data } = await api.get<ResponseItem[]>(
+		`/brands/${brandId}/responses`
+	);
 
-	return res.data;
+	return data;
 }
 
+/**
+ * Create a new brand.
+ */
+export async function createBrand(payload: Partial<Brand>): Promise<Brand> {
+	const { data: created } = await api.post<Brand>("/brands", payload);
+
+	return created;
+}
+
+/**
+ * Update an existing brand.
+ */
 export async function updateBrand(
-	id: string,
-	data: Partial<Brand>
+	id: number,
+	payload: Partial<Brand>
 ): Promise<Brand> {
-	const res = await api.put(`/brands/${id}`, data);
+	const { data: updated } = await api.put<Brand>(`/brands/${id}`, payload);
 
-	return res.data;
+	return updated;
 }
 
-export async function deleteBrand(id: string): Promise<void> {
-	const res = await api.delete(`/brands/${id}`);
-
-	return res.data;
+/**
+ * Delete a brand by its ID.
+ */
+export async function deleteBrand(id: number): Promise<void> {
+	await api.delete<void>(`/brands/${id}`);
 }
