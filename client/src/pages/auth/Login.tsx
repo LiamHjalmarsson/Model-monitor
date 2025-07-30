@@ -48,7 +48,7 @@ const Login: FC = () => {
 				className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 opacity-25"
 				style={{ backgroundImage: `url('/bg.png')` }}
 			/>
-			<div className="w-full max-w-[450px] p-xxl space-y-xxl rounded-xl bg-blue-200/30 border border-white/30 backdrop-blur-3xl shadow-lg z-10">
+			<div className="w-full max-w-[450px] p-xxl space-y-xxl rounded-xl bg-white/40 border border-white/30 backdrop-blur-3xl shadow-lg z-10">
 				<div className="text-center">
 					<h1 className="text-heading-lg font-bold text-black">Login</h1>
 					<p className="text-gray-dark text-lg font-semibold mt-xs">Welcome back!</p>
