@@ -4,14 +4,22 @@ import { getRatings } from "../api/rating";
 
 interface RatingStore {
 	ratings: Rating[];
+	loading: boolean;
 	fetchRatings: (responseId?: number) => Promise<void>;
 }
 
 export const useRatingStore = create<RatingStore>((set) => ({
 	ratings: [],
+	loading: false,
 	fetchRatings: async () => {
-		const data = await getRatings();
+		set({ loading: true });
 
-		set({ ratings: data });
+		try {
+			const ratings = await getRatings();
+
+			set({ ratings, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 }));

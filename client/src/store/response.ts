@@ -13,7 +13,6 @@ interface ResponseStore {
 	responses: ResponseItem[];
 	currentResponse: ResponseItem | null;
 	loading: boolean;
-
 	getResponsesForBrand: (brandId: number) => Promise<void>;
 	getResponseById: (id: number) => Promise<void>;
 	getUserOwnedResponseById: (id: number) => Promise<void>;
@@ -32,47 +31,72 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 	currentResponse: null,
 	loading: false,
 
-	getResponsesForBrand: async (brandId) => {
+	getResponsesForBrand: async (brandId: number) => {
 		set({ loading: true });
 
-		const data = await getResponsesForBrand(brandId);
+		try {
+			const responses = await getResponsesForBrand(brandId);
 
-		set({ responses: data, loading: false });
+			set({ responses, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	getResponseById: async (id) => {
+	getResponseById: async (id: number) => {
 		set({ loading: true });
 
-		const data = await getResponseById(id);
+		try {
+			const response = await getResponseById(id);
 
-		set({ currentResponse: data, loading: false });
+			set({ currentResponse: response, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	getUserOwnedResponseById: async (id) => {
+	getUserOwnedResponseById: async (id: number) => {
+		set({ loading: true });
+		try {
+			const response = await getUserOwnedResponseById(id);
+
+			set({ currentResponse: response, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
+	},
+
+	createResponse: async (brandId: number) => {
 		set({ loading: true });
 
-		const data = await getUserOwnedResponseById(id);
+		try {
+			const response = await createResponse(brandId);
 
-		set({ currentResponse: data, loading: false });
+			set((state) => ({
+				responses: [ response, ...state.responses ],
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	createResponse: async (brandId) => {
-		const res = await createResponse(brandId);
+	generateAIResponse: async (brandId: number) => {
+		set({ loading: true });
 
-		set((state) => ({
-			responses: [res, ...state.responses],
-		}));
+		try {
+			const response = await generateAIResponse(brandId);
+
+			set((state) => ({
+				responses: [ response, ...state.responses ],
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	generateAIResponse: async (brandId) => {
-		const res = await generateAIResponse(brandId);
-
-		set((state) => ({
-			responses: [res, ...state.responses],
-		}));
-	},
-
-	rateResponse: async (responseId, rating) => {
+	rateResponse: async (responseId: number, rating: 0 | 1) => {
 		try {
 			const rated = await createRating(responseId, rating);
 

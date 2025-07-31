@@ -9,7 +9,6 @@ interface BrandStore {
 	brands: Brand[];
 	responses: ResponseItem[];
 	loading: boolean;
-
 	getBrands: () => Promise<void>;
 	createBrand: (data: Partial<Brand>) => Promise<void>;
 	updateBrand: (id: number, data: Partial<Brand>) => Promise<void>;
@@ -24,39 +23,72 @@ export const useBrandStore = create<BrandStore>((set) => ({
 	loading: false,
 
 	getBrands: async () => {
-		const brands = await getBrands();
+		try {
+			const brands = await getBrands();
 
-		set({ brands });
+			set({ brands, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	createBrand: async (data) => {
-		const brand = await createBrand(data);
+	createBrand: async (payload: Partial<Brand>) => {
+		set({ loading: true });
+		try {
+			const brand = await createBrand(payload);
 
-		set((state) => ({
-			brands: [brand, ...state.brands],
-			currentBrand: brand,
-		}));
+			set((state) => ({
+				brands: [ brand, ...state.brands ],
+				currentBrand: brand,
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	updateBrand: async (id, data) => {
-		const updated = await updateBrand(id, data);
+	updateBrand: async (id: number, payload: Partial<Brand>) => {
+		set({ loading: true });
 
-		set({ currentBrand: updated });
+		try {
+			const updated = await updateBrand(id, payload);
+
+			set((state) => ({
+				brands: state.brands.map((brand) => (brand.id === id ? updated : brand)),
+				currentBrand: updated,
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	deleteBrand: async (id) => {
-		await deleteBrand(id);
+	deleteBrand: async (id: number) => {
+		set({ loading: true });
 
-		set((state) => ({
-			brands: state.brands.filter((brand) => brand.id !== id),
-			currentBrand: null,
-			responses: [],
-		}));
+		try {
+			await deleteBrand(id);
+
+			set((state) => ({
+				brands: state.brands.filter((brand) => brand.id !== id),
+				currentBrand: null,
+				responses: [],
+				loading: false,
+			}));
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 
-	getResponsesForBrand: async (id) => {
-		const responses = await getResponsesForBrand(id);
+	getResponsesForBrand: async (id: number) => {
+		set({ loading: true });
 
-		set({ responses });
+		try {
+			const responses = await getResponsesForBrand(id);
+
+			set({ responses, loading: false });
+		} catch (error) {
+			set({ loading: false });
+		}
 	},
 }));
