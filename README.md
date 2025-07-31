@@ -2,7 +2,7 @@
 
 **Model Monitor** is a fullstack web application that allows users to create brands, generate AI responses with OpenAI, and rate those responses. The app includes user authentication, protected API routes, and a modern frontend with Zustand and TailwindCSS.
 
-## 🔧 Tech Stack
+## Tech Stack
 
 ### Backend
 
