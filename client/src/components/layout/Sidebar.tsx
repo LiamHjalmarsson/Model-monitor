@@ -7,7 +7,7 @@ export function Sidebar() {
 
 	const logout = useAuthStore((state) => state.logout);
 
-	const handleLogout = () => {
+	const handleLogout = async () => {
 		logout();
 
 		navigate("/login");

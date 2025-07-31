@@ -22,6 +22,6 @@ router.get("/:id/responses", getResponsesForBrand);
 
 router.put("/:id", brandValidator, validate, updateBrand);
 
-router.delete("/:id", validate, deleteBrand);
+router.delete("/:id", deleteBrand);
 
 export default router;

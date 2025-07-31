@@ -4,11 +4,8 @@ import bcrypt from "bcryptjs";
 async function seed() {
 	try {
 		await db.query(`DROP TABLE IF EXISTS ratings CASCADE`);
-
 		await db.query(`DROP TABLE IF EXISTS responses CASCADE`);
-
 		await db.query(`DROP TABLE IF EXISTS brands CASCADE`);
-
 		await db.query(`DROP TABLE IF EXISTS users CASCADE`);
 
 		// Create Users
@@ -42,7 +39,9 @@ async function seed() {
 		await db.query(`
 			INSERT INTO brands (name, prompt, created_by) VALUES
 			('OpenAI', 'How is OpenAI perceived?', 1),
-			('Nike', 'How is Nike perceived by Gen Z?', 1)
+			('Nike', 'How is Nike perceived by Gen Z?', 1),
+			('Apple', 'How does Apple influence creativity?', 2),
+			('IKEA', 'How is IKEA viewed globally?', 2)
 		`);
 
 		// Create responses
@@ -58,8 +57,10 @@ async function seed() {
 
 		await db.query(`
 			INSERT INTO responses (brand_id, created_by, content) VALUES
-			(1, 1, 'OpenAI is widely regarded as a leader in AI.'),
-			(2, 1, 'Nike remains a top choice among athletes and youth.')
+			(1, 1, 'OpenAI is a pioneer in artificial intelligence.'),
+			(2, 1, 'Nike resonates well with younger generations.'),
+			(3, 2, 'Apple empowers artists and designers.'),
+			(4, 2, 'IKEA offers accessible design around the world.')
 		`);
 
 		// Create ratings
@@ -76,8 +77,12 @@ async function seed() {
 		await db.query(`
 			INSERT INTO ratings (response_id, rating, user_id) VALUES
 			(1, 1, 1),
-			(2, 0, 1)
+			(2, 0, 1),
+			(3, 1, 2),
+			(4, 1, 2)
 		`);
+
+		console.log("Seed completed");
 
 		process.exit(0);
 	} catch (err) {

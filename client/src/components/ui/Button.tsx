@@ -1,7 +1,15 @@
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+import type { ButtonHTMLAttributes } from "react";
+
+interface Button extends ButtonHTMLAttributes<HTMLButtonElement> {
 	loading?: boolean;
-	variant?: "primary" | "secondary" | "outline";
-	fullWidth?: boolean;
+	variant:
+		| "primary"
+		| "secondary"
+		| "outline"
+		| "danger"
+		| "edit"
+		| "confirm";
+	className?: string;
 }
 
 export default function Button({
@@ -10,7 +18,7 @@ export default function Button({
 	variant = "primary",
 	className = "",
 	...props
-}: ButtonProps) {
+}: Button) {
 	const baseStyles = [
 		"py-sm",
 		"px-md",
@@ -22,9 +30,12 @@ export default function Button({
 		"disabled:opacity-50",
 	];
 
-	const variantStyles: Record<string, string[]> = {
+	const variantStyles: Record<Button["variant"], string[]> = {
 		primary: ["bg-primary-500", "hover:bg-primary-600", "text-white"],
 		secondary: ["bg-gray-500", "hover:bg-gray-600", "text-white"],
+		danger: ["bg-danger-500", "hover:bg-danger-600", "text-white"],
+		edit: ["bg-edit-500", "hover:bg-edit-600", "text-white"],
+		confirm: ["bg-confirm-500", "hover:bg-confirm-600", "text-white"],
 		outline: [
 			"bg-transparent",
 			"border",

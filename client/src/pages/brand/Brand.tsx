@@ -3,13 +3,19 @@ import { useParams } from "react-router-dom";
 import { Sidebar } from "../../components/layout/Sidebar";
 import { useBrandStore } from "../../store/brand";
 import { useResponseStore } from "../../store/response";
-import { BrandModal } from "../../components/brand/BrandModal";
+import { useRatingStore } from "../../store/rating";
+import { Modal } from "../../components/shared/Modal";
 import Button from "../../components/ui/Button";
-import ResponseCard from "../../components/response/Card";
 import Header from "../../components/layout/Header";
 import { deleteBrand } from "../../api/brand";
 import { useNavigate } from "react-router-dom";
 import ResponseList from "../../components/response/List";
+import ConfirmationModal from "../../components/shared/ConfirmationModal";
+
+interface UpdateBrand {
+	name: string;
+	prompt: string;
+}
 
 export default function BrandPage() {
 	const { brandId } = useParams<{ brandId: string }>();
@@ -18,7 +24,16 @@ export default function BrandPage() {
 
 	const { brands, getBrands, updateBrand } = useBrandStore();
 
-	const { responses, clearResponses, getResponsesForBrand, createResponse, generateAIResponse, rateResponse } = useResponseStore();
+	const { ratings, addRating, editRating } = useRatingStore();
+
+	const {
+		responses,
+		clearResponses,
+		getResponsesForBrand,
+		createResponse,
+		generateAIResponse,
+		rateResponse,
+	} = useResponseStore();
 
 	const [loading, setLoading] = useState(false);
 
@@ -26,23 +41,23 @@ export default function BrandPage() {
 
 	const [showEditModal, setShowEditModal] = useState(false);
 
-	const brand = brands.find((b) => b.id === numberId);
+	const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+
+	const brand = brands.find((brand) => brand.id === numberId);
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		getBrands();
-	}, []);
+	}, [getBrands]);
 
 	useEffect(() => {
 		if (brandId) {
 			getResponsesForBrand(numberId);
 		}
 
-		return () => {
-			clearResponses();
-		};
-	}, [brandId]);
+		return () => clearResponses();
+	}, [brandId, numberId, getResponsesForBrand, clearResponses]);
 
 	const handleCreate = async () => {
 		setLoading(true);
@@ -56,6 +71,7 @@ export default function BrandPage() {
 		} catch {
 			setError("Failed to create response");
 		}
+
 		setLoading(false);
 	};
 
@@ -75,13 +91,19 @@ export default function BrandPage() {
 
 	const handleRate = async (responseId: number, rating: 0 | 1) => {
 		try {
-			await rateResponse(responseId, rating);
+			const existing = ratings.find((r) => r.response_id === responseId);
+
+			if (existing) {
+				await editRating(existing.id, rating);
+			} else {
+				await addRating({ responseId, rating });
+			}
 		} catch {
 			setError("Failed to rate response");
 		}
 	};
 
-	const handleUpdateBrand = async (data: { name: string; prompt: string; }) => {
+	const handleUpdateBrand = async (data: UpdateBrand) => {
 		await updateBrand(numberId, data);
 
 		await getBrands();
@@ -94,7 +116,7 @@ export default function BrandPage() {
 			await deleteBrand(numberId);
 
 			navigate("/");
-		} catch (err) {
+		} catch {
 			setError("Failed to delete brand.");
 		}
 	};
@@ -111,13 +133,13 @@ export default function BrandPage() {
 						<div className="flex space-x-xl">
 							<Button
 								onClick={() => setShowEditModal(true)}
-								className="text-sm px-md py-sm rounded-md border-blue-500 border text-blue-500 hover:bg-primary-100/50 cursor-pointer"
+								variant="edit"
 							>
 								Edit Brand
 							</Button>
 							<Button
-								onClick={handleDelete}
-								className="text-sm px-md py-sm rounded-md border-red-500 border text-red-500 hover:bg-primary-100/50 cursor-pointer"
+								onClick={() => setShowConfirmModal(true)}
+								variant="danger"
 							>
 								Delete Brand
 							</Button>
@@ -133,25 +155,43 @@ export default function BrandPage() {
 					>
 						Create Dummy Response
 					</Button>
+
 					<Button
 						onClick={handleGenerate}
 						disabled={loading}
+						variant="primary"
 						className="bg-primary-500 hover:bg-primary-600 text-white px-md py-sm rounded-md cursor-pointer"
 					>
 						Generate AI Response
 					</Button>
 				</div>
 
-				{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+				{error && (
+					<p className="text-danger-500 text-sm mb-sm">{error}</p>
+				)}
 
-				<ResponseList />
+				<ResponseList
+					responses={responses}
+					ratings={ratings}
+					onRate={handleRate}
+				/>
 			</main>
 
 			{showEditModal && brand && (
-				<BrandModal
+				<Modal
 					title={`Edit brand: ${brand.name}`}
 					onClose={() => setShowEditModal(false)}
 					onSubmit={handleUpdateBrand}
+					initialData={{ name: brand.name, prompt: brand.prompt }}
+				/>
+			)}
+
+			{showConfirmModal && (
+				<ConfirmationModal
+					title={`Edit brand: ${brand?.name}`}
+					message="Are you sure you want to delete"
+					onConfirm={handleDelete}
+					onCancel={() => setShowConfirmModal(false)}
 				/>
 			)}
 		</div>

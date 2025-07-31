@@ -9,13 +9,14 @@ export default function ResponseDetail() {
 
 	const navigate = useNavigate();
 
-	const { currentResponse, getResponseById, rateResponse } = useResponseStore();
+	const { currentResponse, getResponseById, rateResponse } =
+		useResponseStore();
 
 	useEffect(() => {
 		if (id) {
-			getResponseById(Number(id))
-		};
-	}, [id]);
+			getResponseById(Number(id));
+		}
+	}, [id, getResponseById]);
 
 	const handleRate = async (responseId: number, rating: 0 | 1) => {
 		await rateResponse(responseId, rating);
@@ -23,7 +24,7 @@ export default function ResponseDetail() {
 
 	if (!currentResponse) {
 		return (
-			<div className="p-8">
+			<div className="p-xl">
 				<p>Loading response...</p>
 			</div>
 		);
@@ -31,9 +32,11 @@ export default function ResponseDetail() {
 
 	return (
 		<div className="min-h-screen bg-gray-50 p-8">
-			<Button onClick={() => navigate(-1)}>← Back to brand</Button>
+			<Button onClick={() => navigate(-1)} variant="primary">
+				← Back to brand
+			</Button>
 
-			<h1 className="text-2xl font-bold text-gray-800 my-md">
+			<h1 className="text-2xl font-bold text-black my-md">
 				Response #{currentResponse.id}
 			</h1>
 

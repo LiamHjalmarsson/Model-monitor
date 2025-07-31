@@ -16,6 +16,7 @@ export default function ResponseActions({
 		<div className="flex gap-4 mb-6">
 			<Button
 				onClick={onCreate}
+				variant="edit"
 				loading={loading}
 				className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2 w-auto"
 			>
@@ -24,6 +25,7 @@ export default function ResponseActions({
 
 			<Button
 				onClick={onGenerate}
+				variant="danger"
 				loading={loading}
 				className="bg-green-600 hover:bg-green-700 flex items-center gap-2 w-auto"
 			>

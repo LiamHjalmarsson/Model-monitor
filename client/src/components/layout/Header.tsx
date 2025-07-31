@@ -1,12 +1,12 @@
 import React from "react";
 
-interface HeaderProps {
+interface Header {
 	title: string;
 	subtitle?: string;
 	children?: React.ReactNode;
 }
 
-export default function Header({ title, subtitle, children }: HeaderProps) {
+export default function Header({ title, subtitle, children }: Header) {
 	return (
 		<div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center">
 			<div>

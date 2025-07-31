@@ -5,12 +5,13 @@ import type { Brand } from "../../api/brand";
 import { FaRegComments, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { FiArrowRightCircle } from "react-icons/fi";
 
-interface LatestBrandPreviewProps {
+interface LatestBrandPreview {
 	brand: Brand;
 }
 
-export function LatestBrandPreview({ brand }: LatestBrandPreviewProps) {
-	const { responses, getResponsesForBrand, clearResponses } = useResponseStore();
+export function LatestBrandPreview({ brand }: LatestBrandPreview) {
+	const { responses, getResponsesForBrand, clearResponses } =
+		useResponseStore();
 
 	useEffect(() => {
 		getResponsesForBrand(brand.id);
@@ -20,19 +21,15 @@ export function LatestBrandPreview({ brand }: LatestBrandPreviewProps) {
 
 	const responseCount = responses.length;
 
-	const likeCount = responses.filter((r) => r.rating === 1).length;
-
-	const dislikeCount = responses.filter((r) => r.rating === 0).length;
-
 	return (
-		<section className="mt-8">
-			<h3 className="text-2xl font-bold text-gray-800 mb-4">
+		<section className="mt-xl">
+			<h3 className="text-2xl font-bold text-gray-800 mb-xl">
 				Latest Brand
 			</h3>
 			<Link to={`/brands/${brand.id}`}>
-				<div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-md duration-200 hover:shadow-lg transition hover:bg-gray-100/20 hover:border-primary-500/20 group">
+				<div className="bg-white p-xl rounded-2xl border border-gray-200 shadow-md duration-200 hover:shadow-lg transition hover:bg-gray-100/20 hover:border-primary-500/20 group">
 					<div className="flex items-center justify-between mb-3">
-						<h4 className="text-xl font-semibold text-gray-900">
+						<h4 className="text-xl font-semibold text-black">
 							{brand.name}
 						</h4>
 						<FiArrowRightCircle
@@ -40,21 +37,23 @@ export function LatestBrandPreview({ brand }: LatestBrandPreviewProps) {
 							size={24}
 						/>
 					</div>
-					<p className="text-gray-700 text-sm mb-4 whitespace-pre-wrap">
+					<p className="text-dark-gray text-sm mb-lg whitespace-pre-wrap">
 						{brand.prompt}
 					</p>
-					<div className="mt-4 grid grid-cols-3 gap-4 text-gray-600">
-						<div className="flex items-center gap-2">
-							<FaRegComments />
+					<div className="flex justify-between items-center text-gray">
+						<div className="flex items-center">
+							<FaRegComments className="mr-sm" />
 							<span>{responseCount} responses</span>
 						</div>
-						<div className="flex items-center gap-2">
-							<FaThumbsUp />
-							<span>{likeCount} likes</span>
+
+						<div className="flex items-center">
+							<FaThumbsUp className="mr-sm" />
+							<span> likes</span>
 						</div>
-						<div className="flex items-center gap-2">
-							<FaThumbsDown />
-							<span>{dislikeCount} dislikes</span>
+
+						<div className="flex items-center">
+							<FaThumbsDown className="mr-sm" />
+							<span>dislikes</span>
 						</div>
 					</div>
 				</div>

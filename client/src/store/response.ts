@@ -38,7 +38,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 			const responses = await getResponsesForBrand(brandId);
 
 			set({ responses, loading: false });
-		} catch (error) {
+		} catch {
 			set({ loading: false });
 		}
 	},
@@ -50,7 +50,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 			const response = await getResponseById(id);
 
 			set({ currentResponse: response, loading: false });
-		} catch (error) {
+		} catch {
 			set({ loading: false });
 		}
 	},
@@ -61,7 +61,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 			const response = await getUserOwnedResponseById(id);
 
 			set({ currentResponse: response, loading: false });
-		} catch (error) {
+		} catch {
 			set({ loading: false });
 		}
 	},
@@ -73,10 +73,10 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 			const response = await createResponse(brandId);
 
 			set((state) => ({
-				responses: [ response, ...state.responses ],
+				responses: [response, ...state.responses],
 				loading: false,
 			}));
-		} catch (error) {
+		} catch {
 			set({ loading: false });
 		}
 	},
@@ -88,10 +88,10 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 			const response = await generateAIResponse(brandId);
 
 			set((state) => ({
-				responses: [ response, ...state.responses ],
+				responses: [response, ...state.responses],
 				loading: false,
 			}));
-		} catch (error) {
+		} catch {
 			set({ loading: false });
 		}
 	},
@@ -107,23 +107,19 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 						: res
 				),
 			}));
-		} catch (err: any) {
-			if (err?.response?.status === 409) {
-				const existing = await getResponseById(responseId);
+		} catch {
+			const existing = await getResponseById(responseId);
 
-				if (existing) {
-					const updated = await updateRating(existing.id, rating);
+			if (existing) {
+				const updated = await updateRating(existing.id, rating);
 
-					set((state) => ({
-						responses: state.responses.map((res) =>
-							res.id === updated.response_id
-								? { ...res, rating: updated.rating }
-								: res
-						),
-					}));
-				}
-			} else {
-				console.error("Rating error", err);
+				set((state) => ({
+					responses: state.responses.map((res) =>
+						res.id === updated.response_id
+							? { ...res, rating: updated.rating }
+							: res
+					),
+				}));
 			}
 		}
 	},

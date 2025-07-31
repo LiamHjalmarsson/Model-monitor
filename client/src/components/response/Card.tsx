@@ -4,24 +4,29 @@ import { Link } from "react-router-dom";
 
 interface ResponseCardProps {
 	response: ResponseItem;
+	rating?: 0 | 1;
 	onRate: (id: number, rating: 0 | 1) => void;
 }
 
-export default function ResponseCard({ response, onRate }: ResponseCardProps) {
-	const isLiked = response.rating === 1;
+export default function ResponseCard({
+	response,
+	rating,
+	onRate,
+}: ResponseCardProps) {
+	const isLiked = rating === 1;
+	const isDisliked = rating === 0;
 
-	const isDisliked = response.rating === 0;
+	const baseClasses =
+		"rounded-2xl shadow-lg transition p-6 flex flex-col justify-between h-full border";
 
 	const borderClass = isLiked
 		? "border-green-200 bg-green-50"
 		: isDisliked
 			? "border-red-200 bg-red-50"
-			: "border-gray-200 bg-white";
+			: "border-gray-200 bg-gray-50";
 
 	return (
-		<div
-			className={`rounded-2xl shadow-lg transition p-6 flex flex-col justify-between h-full border ${borderClass}`}
-		>
+		<div className={`${baseClasses} ${borderClass}`}>
 			<div className="mb-4">
 				<p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap">
 					{response.content}

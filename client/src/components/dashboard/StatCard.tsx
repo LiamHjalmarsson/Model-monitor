@@ -1,10 +1,10 @@
-interface StatCardProps {
+interface StatCard {
 	title: string;
 	value: string | number;
 	icon: React.ReactNode;
 }
 
-export default function StatCard({ title, value, icon }: StatCardProps) {
+export default function StatCard({ title, value, icon }: StatCard) {
 	return (
 		<div className="bg-white p-lg rounded-lg shadow flex items-center">
 			<div className="mr-md">{icon}</div>

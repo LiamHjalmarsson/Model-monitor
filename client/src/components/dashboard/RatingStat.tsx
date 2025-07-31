@@ -1,19 +1,27 @@
-type RatingStatProps = {
+type RatingStat = {
 	icon: React.ReactNode;
 	label: string;
 	count: number;
 	variant: "like" | "dislike";
 };
 
-export default function RatingStat({ icon, label, count, variant }: RatingStatProps) {
-	const bgClass = variant === "like" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600";
+export default function RatingStat({
+	icon,
+	label,
+	count,
+	variant,
+}: RatingStat) {
+	const bgClass =
+		variant === "like"
+			? "bg-confirm-500/20 text-confirm-600 text-confirm-600"
+			: "bg-danger-500/20 text-danger-600 text-danger-600";
 
 	return (
-		<div className="bg-white p-lg rounded-lg shadow flex items-center gap-md border border-gray-200">
-			<div className={`p-sm rounded-full ${bgClass}`}>{icon}</div>
+		<div className="flex items-center gap-md rounded-lg border border-gray-200 bg-white p-lg shadow-sm">
+			<div className={`rounded-full p-sm ${bgClass}`}>{icon}</div>
 			<div>
 				<p className="text-sm text-gray">{label}</p>
-				<p className="text-base font-medium">{count}</p>
+				<p className="text-base font-medium text-black">{count}</p>
 			</div>
 		</div>
 	);

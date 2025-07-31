@@ -3,10 +3,10 @@ import { useBrandStore } from "../store/brand";
 import { Sidebar } from "../components/layout/Sidebar";
 import StatSection from "../components/dashboard/Stats";
 import { LatestBrandPreview } from "../components/brand/LatestPreview";
-import { BrandModal } from "../components/brand/BrandModal";
 import Header from "../components/layout/Header";
 import RatingsOverview from "../components/dashboard/Ratings";
 import Brands from "../components/brand/Brands";
+import { Modal } from "../components/shared/Modal";
 
 export default function Dashboard() {
 	const { brands, getBrands, createBrand } = useBrandStore();
@@ -32,7 +32,7 @@ export default function Dashboard() {
 					subtitle="Overview of your brands and performance"
 				/>
 
-				<Brands />
+				<Brands brands={brands} onCreate={() => setShowModal(true)} />
 
 				<StatSection
 					brandsCount={brands.length}
@@ -44,7 +44,7 @@ export default function Dashboard() {
 				<RatingsOverview />
 
 				{showModal && (
-					<BrandModal
+					<Modal
 						onClose={() => setShowModal(false)}
 						onSubmit={handleCreate}
 					/>

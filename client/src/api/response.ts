@@ -12,8 +12,12 @@ export interface ResponseItem {
 /**
  * Fetch all responses for a specific brand.
  */
-export async function getResponsesForBrand(brandId: number): Promise<ResponseItem[]> {
-	const { data } = await api.get<ResponseItem[]>(`/responses/brands/${brandId}`);
+export async function getResponsesForBrand(
+	brandId: number
+): Promise<ResponseItem[]> {
+	const { data } = await api.get<ResponseItem[]>(
+		`/responses/brands/${brandId}`
+	);
 
 	return data;
 }
@@ -30,7 +34,9 @@ export async function getResponseById(id: number): Promise<ResponseItem> {
 /**
  * Fetch a response owned by the current user.
  */
-export async function getUserOwnedResponseById(id: number): Promise<ResponseItem> {
+export async function getUserOwnedResponseById(
+	id: number
+): Promise<ResponseItem> {
 	const { data } = await api.get<ResponseItem>(`/responses/owned/${id}`);
 
 	return data;
@@ -40,7 +46,9 @@ export async function getUserOwnedResponseById(id: number): Promise<ResponseItem
  * Create a new random response for a brand.
  */
 export async function createResponse(brandId: number): Promise<ResponseItem> {
-	const { data } = await api.post<ResponseItem>(`/responses/brands/${brandId}`);
+	const { data } = await api.post<ResponseItem>(
+		`/responses/brands/${brandId}`
+	);
 
 	return data;
 }
@@ -48,8 +56,12 @@ export async function createResponse(brandId: number): Promise<ResponseItem> {
 /**
  * Generate an AI-driven response for a brand.
  */
-export async function generateAIResponse(brandId: number): Promise<ResponseItem> {
-	const { data } = await api.post<ResponseItem>(`/responses/brands/${brandId}/generate`);
+export async function generateAIResponse(
+	brandId: number
+): Promise<ResponseItem> {
+	const { data } = await api.post<ResponseItem>(
+		`/responses/brands/${brandId}/generate`
+	);
 
 	return data;
 }

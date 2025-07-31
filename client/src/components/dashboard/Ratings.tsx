@@ -17,7 +17,7 @@ export default function RatingsOverview() {
 	return (
 		<section className="mt-xxl">
 			<h2 className="text-xl font-semibold mb-md">Ratings Overview</h2>
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-lg">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-xl">
 				<RatingStat
 					icon={<FaThumbsUp />}
 					label="Total Likes"

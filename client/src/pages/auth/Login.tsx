@@ -20,8 +20,8 @@ export default function Login() {
 
 	const loginStore = useAuthStore((state) => state.login);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 
 		setError("");
 
@@ -40,7 +40,7 @@ export default function Login() {
 		} finally {
 			setLoading(false);
 		}
-	};
+	}
 
 	return (
 		<div className="relative min-h-screen flex items-center justify-center bg-gray-900">

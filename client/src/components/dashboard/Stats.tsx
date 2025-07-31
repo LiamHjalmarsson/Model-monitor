@@ -3,7 +3,12 @@ import { FaRegComments } from "react-icons/fa";
 import { MdOutlineBrandingWatermark } from "react-icons/md";
 import StatCard from "./StatCard";
 
-export default function StatSection({ brandsCount, topBrand }: { brandsCount: number; topBrand: string; }) {
+interface StatSection {
+	brandsCount: number;
+	topBrand: string;
+}
+
+export default function StatSection({ brandsCount, topBrand }: StatSection) {
 	return (
 		<section className="mt-xxl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
 			<StatCard
