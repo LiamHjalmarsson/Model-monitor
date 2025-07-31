@@ -28,8 +28,7 @@
 -   cd server
 -   npm install
 -   npm run seed
--   npm run dev
--   npm run nodemon
+-   npm run dev or npm run node
 
 ### Env
 
@@ -49,23 +48,38 @@
 ### Frontend
 
 -   cd client
+-   npm install
+-   npm run dev
+
+### Test users
+
+- Email: test@example.com
+- Lösenord: password
+
+- Email: admin@example.com
+- Lösenord: password
 
 ## Endpoints
 
-| Funktion                  | Metod    | Endpoint                                   |
-| ------------------------- | -------- | ------------------------------------------ |
-| Login                     | `POST`   | `/api/auth/login`                          |
-| Logout                    | `POST`   | `/api/auth/logout`                         |
-| Hämta brands              | `GET`    | `/api/brands/`                             |
-| Skapa brand               | `POST`   | `/api/brands/`                             |
-| Hämta brand               | `GET`    | `/api/brands/:id`                          |
-| Uppdatera brand           | `PUT`    | `/api/brands/:id`                          |
-| Ta bort brand             | `DELETE` | `/api/brands/:id`                          |
-| Hämta responses för brand | `GET`    | `/api/responses/brands/:brand_id`          |
-| Skapa response            | `POST`   | `/api/responses/brands/:brand_id`          |
-| Generera AI-response      | `POST`   | `/api/responses/brands/:brand_id/generate` |
-| Hämta enskild response    | `GET`    | `/api/responses/:id`                       |
-| Skapa rating              | `POST`   | `/api/ratings/`                            |
-| Uppdatera rating          | `PUT`    | `/api/ratings/:id`                         |
-| Hämta alla ratings        | `GET`    | `/api/ratings/`                            |
-| Hämta enskild rating      | `GET`    | `/api/ratings/:id`                         |
+## 📡 API Endpoints
+
+## 📡 API Endpoints
+
+| Function                      | Method  | Endpoint                                   |
+|------------------------------|---------|--------------------------------------------|
+| Login                        | `POST`  | `/api/auth/login`                          |
+| Logout                       | `POST`  | `/api/auth/logout`                         |
+| Get all brands               | `GET`   | `/api/brands/`                             |
+| Create brand                 | `POST`  | `/api/brands/`                             |
+| Update brand                 | `PUT`   | `/api/brands/:id`                          |
+| Delete brand                 | `DELETE`| `/api/brands/:id`                          |
+| Get responses for brand      | `GET`   | `/api/responses/brands/:brand_id`          |
+| Create dummy response        | `POST`  | `/api/responses/brands/:brand_id`          |
+| Generate AI response         | `POST`  | `/api/responses/brands/:brand_id/generate` |
+| Get single response          | `GET`   | `/api/responses/:id`                       |
+| Get own response             | `GET`   | `/api/responses/owned/:id`                 |
+| Get all ratings              | `GET`   | `/api/ratings/`                            |
+| Get single rating            | `GET`   | `/api/ratings/:id`                         |
+| Create rating                | `POST`  | `/api/ratings/`                            |
+| Update rating                | `PUT`   | `/api/ratings/:id`                         |
+
