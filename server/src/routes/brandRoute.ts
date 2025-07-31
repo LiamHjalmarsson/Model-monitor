@@ -7,6 +7,8 @@ import {
 	getResponsesForBrand,
 } from "../controllers/brandController.js";
 import authMiddleware from "../middleware/auth.js";
+import { validate } from "../middleware/validate.js";
+import { brandValidator } from "../validation/brandValidation.js";
 
 const router = Router();
 
@@ -14,12 +16,12 @@ router.use(authMiddleware);
 
 router.get("/", getBrands);
 
-router.post("/", createBrand);
+router.post("/", brandValidator, validate, createBrand);
 
 router.get("/:id/responses", getResponsesForBrand);
 
-router.put("/:id", updateBrand);
+router.put("/:id", brandValidator, validate, updateBrand);
 
-router.delete("/:id", deleteBrand);
+router.delete("/:id", validate, deleteBrand);
 
 export default router;

@@ -10,8 +10,7 @@ interface LatestBrandPreviewProps {
 }
 
 export function LatestBrandPreview({ brand }: LatestBrandPreviewProps) {
-	const { responses, getResponsesForBrand, clearResponses } =
-		useResponseStore();
+	const { responses, getResponsesForBrand, clearResponses } = useResponseStore();
 
 	useEffect(() => {
 		getResponsesForBrand(brand.id);

@@ -26,7 +26,7 @@ export async function getResponsesForBrand(req: AuthRequest, res: Response) {
 		);
 
 		res.status(200).json(rows);
-	} catch (err) {
+	} catch (error) {
 		res.status(500).json({ message: "Server error" });
 	}
 }
@@ -99,8 +99,7 @@ export async function updateBrand(req: AuthRequest, res: Response) {
 		const result = await query(`UPDATE brands SET name = $1, prompt = $2 WHERE id = $3 RETURNING *`, [ name, prompt, brandId ]);
 
 		res.status(200).json(result.rows[ 0 ]);
-	} catch (err) {
-		console.error("Failed to update brand:", err);
+	} catch (error) {
 		res.status(500).json({ message: "Server error" });
 	}
 }
@@ -125,7 +124,7 @@ export async function deleteBrand(req: AuthRequest, res: Response) {
 		}
 
 		res.status(200).json({ message: "Brand deleted" });
-	} catch (err) {
+	} catch (error) {
 		res.status(500).json({ message: "Server error" });
 	}
 }

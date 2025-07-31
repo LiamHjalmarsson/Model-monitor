@@ -9,12 +9,7 @@ interface BrandModalProps {
 	title?: string;
 }
 
-export function BrandModal({
-	onClose,
-	onSubmit,
-	initialData,
-	title = "Create New Brand",
-}: BrandModalProps) {
+export function BrandModal({ onClose, onSubmit, initialData, title = "Create New Brand" }: BrandModalProps) {
 	const [formData, setFormData] = useState({ name: "", prompt: "" });
 
 	const [error, setError] = useState("");
@@ -35,8 +30,7 @@ export function BrandModal({
 
 		document.addEventListener("mousedown", handleClickOutside);
 
-		return () =>
-			document.removeEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [onClose]);
 
 	const handleSubmit = async (event: React.FormEvent) => {

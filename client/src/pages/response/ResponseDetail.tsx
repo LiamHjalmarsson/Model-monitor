@@ -4,16 +4,22 @@ import { useResponseStore } from "../../store/response";
 import Button from "../../components/ui/Button";
 import ResponseCard from "../../components/response/Card";
 
-export default function ResponseDetailPage() {
+export default function ResponseDetail() {
 	const { id } = useParams<{ id: string }>();
+
 	const navigate = useNavigate();
 
-	const { currentResponse, getResponseById, rateResponse } =
-		useResponseStore();
+	const { currentResponse, getResponseById, rateResponse } = useResponseStore();
 
 	useEffect(() => {
-		if (id) getResponseById(Number(id));
+		if (id) {
+			getResponseById(Number(id))
+		};
 	}, [id]);
+
+	const handleRate = async (responseId: number, rating: 0 | 1) => {
+		await rateResponse(responseId, rating);
+	};
 
 	if (!currentResponse) {
 		return (
@@ -22,10 +28,6 @@ export default function ResponseDetailPage() {
 			</div>
 		);
 	}
-
-	const handleRate = async (responseId: number, rating: 0 | 1) => {
-		await rateResponse(responseId, rating);
-	};
 
 	return (
 		<div className="min-h-screen bg-gray-50 p-8">

@@ -3,8 +3,8 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/error/NotFound";
 import Brand from "../pages/brand/Brand";
-import ResponseDetailPage from "../pages/response/ResponseDetailPage";
 import PrivateLayout from "../layouts/Private";
+import ResponseDetail from "../pages/response/ResponseDetail";
 
 export const router = createBrowserRouter([
 	{
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <Dashboard /> },
 			{ path: "/brands/:brandId", element: <Brand /> },
-			{ path: "/responses/:id", element: <ResponseDetailPage /> },
+			{ path: "/responses/:id", element: <ResponseDetail /> },
 			{ path: "*", element: <NotFound /> },
 		],
 	},

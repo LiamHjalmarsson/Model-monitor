@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useBrandStore } from "../store/brand";
-import type { Brand } from "../api/brand";
 import { Sidebar } from "../components/layout/Sidebar";
-import { BrandCard } from "../components/brand/Card";
-import { CreateBrandButton } from "../components/brand/CreateButton";
 import StatSection from "../components/dashboard/Stats";
 import { LatestBrandPreview } from "../components/brand/LatestPreview";
 import { BrandModal } from "../components/brand/BrandModal";
 import Header from "../components/layout/Header";
 import RatingsOverview from "../components/dashboard/Ratings";
+import Brands from "../components/brand/Brands";
 
 export default function Dashboard() {
 	const { brands, getBrands, createBrand } = useBrandStore();
 
 	const [showModal, setShowModal] = useState(false);
+
+	const latest = brands[0];
 
 	useEffect(() => {
 		getBrands();
@@ -21,8 +21,6 @@ export default function Dashboard() {
 
 	const handleCreate = (data: { name: string; prompt: string }) =>
 		createBrand(data);
-
-	const latest = brands[0];
 
 	return (
 		<div className="flex min-h-screen bg-gray-50">
@@ -34,18 +32,7 @@ export default function Dashboard() {
 					subtitle="Overview of your brands and performance"
 				/>
 
-				<section>
-					<h2 className="text-xl font-semibold text-gray-dark mb-md">
-						Your Brands
-					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
-						{brands.map((brand: Brand) => (
-							<BrandCard key={brand.id} brand={brand} />
-						))}
-
-						<CreateBrandButton onClick={() => setShowModal(true)} />
-					</div>
-				</section>
+				<Brands />
 
 				<StatSection
 					brandsCount={brands.length}

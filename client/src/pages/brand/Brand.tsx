@@ -9,6 +9,7 @@ import ResponseCard from "../../components/response/Card";
 import Header from "../../components/layout/Header";
 import { deleteBrand } from "../../api/brand";
 import { useNavigate } from "react-router-dom";
+import ResponseList from "../../components/response/List";
 
 export default function BrandPage() {
 	const { brandId } = useParams<{ brandId: string }>();
@@ -17,14 +18,7 @@ export default function BrandPage() {
 
 	const { brands, getBrands, updateBrand } = useBrandStore();
 
-	const {
-		responses,
-		clearResponses,
-		getResponsesForBrand,
-		createResponse,
-		generateAIResponse,
-		rateResponse,
-	} = useResponseStore();
+	const { responses, clearResponses, getResponsesForBrand, createResponse, generateAIResponse, rateResponse } = useResponseStore();
 
 	const [loading, setLoading] = useState(false);
 
@@ -44,6 +38,7 @@ export default function BrandPage() {
 		if (brandId) {
 			getResponsesForBrand(numberId);
 		}
+
 		return () => {
 			clearResponses();
 		};
@@ -86,10 +81,7 @@ export default function BrandPage() {
 		}
 	};
 
-	const handleUpdateBrand = async (data: {
-		name: string;
-		prompt: string;
-	}) => {
+	const handleUpdateBrand = async (data: { name: string; prompt: string; }) => {
 		await updateBrand(numberId, data);
 
 		await getBrands();
@@ -117,23 +109,23 @@ export default function BrandPage() {
 				>
 					{brand && (
 						<div className="flex space-x-xl">
-							<button
+							<Button
 								onClick={() => setShowEditModal(true)}
 								className="text-sm px-md py-sm rounded-md border-blue-500 border text-blue-500 hover:bg-primary-100/50 cursor-pointer"
 							>
 								Edit Brand
-							</button>
-							<button
+							</Button>
+							<Button
 								onClick={handleDelete}
 								className="text-sm px-md py-sm rounded-md border-red-500 border text-red-500 hover:bg-primary-100/50 cursor-pointer"
 							>
 								Delete Brand
-							</button>
+							</Button>
 						</div>
 					)}
 				</Header>
 
-				<div className="flex gap-4 mb-6">
+				<div className="flex gap-xl mb-xl">
 					<Button
 						onClick={handleCreate}
 						disabled={loading}
@@ -152,21 +144,7 @@ export default function BrandPage() {
 
 				{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-				<section className="space-y-xl">
-					{responses.map((res) => (
-						<ResponseCard
-							key={res.id}
-							response={res}
-							onRate={handleRate}
-						/>
-					))}
-
-					{responses.length === 0 && (
-						<p className="text-gray-500 text-sm mt-6">
-							No responses yet.
-						</p>
-					)}
-				</section>
+				<ResponseList />
 			</main>
 
 			{showEditModal && brand && (

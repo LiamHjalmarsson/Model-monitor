@@ -27,9 +27,9 @@ interface ResponseStore {
 }
 
 export const useResponseStore = create<ResponseStore>((set) => ({
-	responses: [],
 	currentResponse: null,
 	loading: false,
+	responses: [],
 
 	getResponsesForBrand: async (brandId: number) => {
 		set({ loading: true });

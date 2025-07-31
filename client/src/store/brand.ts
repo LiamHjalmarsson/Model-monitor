@@ -18,9 +18,9 @@ interface BrandStore {
 
 export const useBrandStore = create<BrandStore>((set) => ({
 	currentBrand: null,
+	loading: false,
 	brands: [],
 	responses: [],
-	loading: false,
 
 	getBrands: async () => {
 		try {

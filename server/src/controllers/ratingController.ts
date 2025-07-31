@@ -94,7 +94,7 @@ export async function createRating(req: AuthenticatedRequest, res: Response) {
 		);
 
 		res.status(201).json(rows[ 0 ]);
-	} catch (error: any) {
+	} catch (error) {
 		res.status(500).send("Server error");
 	}
 }

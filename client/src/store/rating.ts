@@ -9,8 +9,8 @@ interface RatingStore {
 }
 
 export const useRatingStore = create<RatingStore>((set) => ({
-	ratings: [],
 	loading: false,
+	ratings: [],
 	fetchRatings: async () => {
 		set({ loading: true });
 
