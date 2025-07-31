@@ -37,10 +37,7 @@ export async function getRatingById(id: number): Promise<Rating> {
 /**
  * Create a new rating for a response.
  */
-export async function createRating(
-	responseId: number,
-	rating: 0 | 1
-): Promise<Rating> {
+export async function createRating(responseId: number, rating: 0 | 1): Promise<Rating> {
 	const res = await api.post("/ratings", {
 		responseId,
 		rating,
@@ -53,7 +50,9 @@ export async function createRating(
  * Update an existing rating.
  */
 export async function updateRating(id: number, rating: 0 | 1): Promise<Rating> {
-	const res = await api.put(`/ratings/${id}`, { rating });
+	const { data } = await api.put<Rating>(`/ratings/${id}`, {
+		rating
+	});
 
-	return res.data;
+	return data;
 }

@@ -20,12 +20,8 @@ export async function getBrands(): Promise<Brand[]> {
 /**
  * Fetch responses for a specific brand.
  */
-export async function getResponsesForBrand(
-	brandId: number
-): Promise<ResponseItem[]> {
-	const { data } = await api.get<ResponseItem[]>(
-		`/brands/${brandId}/responses`
-	);
+export async function getResponsesForBrand(brandId: number): Promise<ResponseItem[]> {
+	const { data } = await api.get<ResponseItem[]>(`/brands/${brandId}/responses`);
 
 	return data;
 }
@@ -42,10 +38,7 @@ export async function createBrand(payload: Partial<Brand>): Promise<Brand> {
 /**
  * Update an existing brand.
  */
-export async function updateBrand(
-	id: number,
-	payload: Partial<Brand>
-): Promise<Brand> {
+export async function updateBrand(id: number, payload: Partial<Brand>): Promise<Brand> {
 	const { data: updated } = await api.put<Brand>(`/brands/${id}`, payload);
 
 	return updated;
