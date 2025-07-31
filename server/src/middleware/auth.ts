@@ -8,21 +8,15 @@ interface AuthenticatedRequest extends Request {
 /**
  * Middleware to verify JWT token and attach userId to request.
  */
-export default function authMiddleware(
-	req: AuthenticatedRequest,
-	res: Response,
-	next: NextFunction
-): void {
-	const authHeader = req.headers["authorization"];
+export default function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+	const authHeader = req.headers[ "authorization" ];
 
 	if (!authHeader) {
 		res.status(401).json({ message: "No token provided" });
 		return;
 	}
 
-	const token = authHeader.startsWith("Bearer ")
-		? authHeader.slice(7)
-		: authHeader;
+	const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
 
 	try {
 		const decoded = verifyToken(token);
@@ -31,7 +25,6 @@ export default function authMiddleware(
 
 		next();
 	} catch (err) {
-		console.error("Invalid token:", err);
 		res.status(401).json({ message: "Invalid token" });
 	}
 }

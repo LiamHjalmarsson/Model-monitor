@@ -9,18 +9,11 @@ interface User {
 	password: string;
 }
 
-export async function login(
-	req: Request,
-	res: Response,
-	next: NextFunction
-): Promise<void> {
+export async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
 	try {
 		const { email, password: candidate } = req.body;
 
-		const result = await query<User>(
-			"SELECT id, email, password FROM users WHERE email = $1",
-			[email]
-		);
+		const result = await query<User>("SELECT id, email, password FROM users WHERE email = $1", [ email ]);
 
 		if (result.rowCount === 0) {
 			res.status(401).json({ message: "Invalid email or password" });
@@ -28,7 +21,7 @@ export async function login(
 			return;
 		}
 
-		const { id, password } = result.rows[0];
+		const { id, password } = result.rows[ 0 ];
 
 		const match = await bcrypt.compare(candidate, password);
 
@@ -50,5 +43,5 @@ export async function login(
 }
 
 export function logout(req: Request, res: Response): Response {
-	return res.status(200).json({ message: "Utloggad" });
+	return res.status(200).json({ message: 'Logged out successfully' });
 }

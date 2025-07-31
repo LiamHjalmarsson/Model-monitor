@@ -16,10 +16,7 @@ const pool = new Pool(poolConfig);
  * Exempel:
  * const result = await query<User>("SELECT * FROM users WHERE id = $1", [id]);
  */
-export async function query<T extends QueryResultRow = any>(
-	text: string,
-	params: any[] = []
-): Promise<QueryResult<T>> {
+export async function query<T extends QueryResultRow = any>(text: string, params: any[] = []): Promise<QueryResult<T>> {
 	return pool.query<T>(text, params);
 }
 
