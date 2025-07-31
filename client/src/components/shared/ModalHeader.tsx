@@ -11,7 +11,7 @@ export default function ModalHeader({ title, onClose }: ModalHeader) {
 			<h2 className="text-2xl font-bold">{title}</h2>
 			<button
 				onClick={onClose}
-				className="rounded-full bg-dark-gray p-xs transition-colors duration-150 hover:bg-primary-500/70"
+				className="cursor-pointer rounded-full bg-dark-gray p-xs transition-colors duration-150 hover:bg-primary-500/70"
 				aria-label="Close modal"
 			>
 				<FiX size={24} />

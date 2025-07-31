@@ -4,9 +4,10 @@ import Button from "../ui/Button";
 interface ModalForm {
 	initialData: { name: string; prompt: string };
 	onSubmit: (data: { name: string; prompt: string }) => Promise<void>;
+	label: string;
 }
 
-export default function ModalForm({ initialData, onSubmit }: ModalForm) {
+export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
 	const [formData, setFormData] = useState<{ name: string; prompt: string }>(
 		initialData
 	);
@@ -81,7 +82,7 @@ export default function ModalForm({ initialData, onSubmit }: ModalForm) {
 				loading={loading}
 				className="w-full"
 			>
-				Create Brand
+				{label}
 			</Button>
 		</form>
 	);

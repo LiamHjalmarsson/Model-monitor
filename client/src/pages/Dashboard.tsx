@@ -26,7 +26,7 @@ export default function Dashboard() {
 		<div className="flex min-h-screen bg-gray-50">
 			<Sidebar />
 
-			<main className="flex-1 p-xl">
+			<main className="flex-1 p-xl container mx-auto">
 				<Header
 					title="Dashboard"
 					subtitle="Overview of your brands and performance"
@@ -39,7 +39,15 @@ export default function Dashboard() {
 					topBrand={latest?.name || ""}
 				/>
 
-				{latest && <LatestBrandPreview brand={latest} />}
+				{latest && (
+					<LatestBrandPreview
+						brand={latest}
+						gradientFromClass="from-pink-300"
+						gradientToClass="to-pink-100"
+						borderClass="border-pink-200"
+						hoverBorderClass="hover:border-pink-400/30"
+					/>
+				)}
 
 				<RatingsOverview />
 

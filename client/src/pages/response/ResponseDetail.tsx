@@ -31,7 +31,7 @@ export default function ResponseDetail() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-50 p-8">
+		<div className="min-h-screen bg-gray-50 p-xl container mx-auto">
 			<Button onClick={() => navigate(-1)} variant="primary">
 				← Back to brand
 			</Button>

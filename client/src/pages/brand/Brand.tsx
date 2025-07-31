@@ -32,7 +32,6 @@ export default function BrandPage() {
 		getResponsesForBrand,
 		createResponse,
 		generateAIResponse,
-		rateResponse,
 	} = useResponseStore();
 
 	const [loading, setLoading] = useState(false);
@@ -124,7 +123,7 @@ export default function BrandPage() {
 	return (
 		<div className="flex min-h-screen bg-gray-50">
 			<Sidebar />
-			<main className="flex-1 p-8">
+			<main className="flex-1 p-xl container mx-auto">
 				<Header
 					title={brand ? brand.name : "Brand"}
 					subtitle={brand ? brand.prompt : "Promt"}
@@ -182,6 +181,7 @@ export default function BrandPage() {
 					title={`Edit brand: ${brand.name}`}
 					onClose={() => setShowEditModal(false)}
 					onSubmit={handleUpdateBrand}
+					submitButtonLabel="Update"
 					initialData={{ name: brand.name, prompt: brand.prompt }}
 				/>
 			)}

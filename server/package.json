@@ -5,12 +5,10 @@
 	"main": "dist/app.js",
 	"type": "module",
 	"scripts": {
-		"develop": "tsc && node dist/server.js",
+		"dev": "tsc && node dist/server.js",
 		"node": "nodemon",
-		"serve": "ts-node --respawn --transpile-only src/server.ts",
 		"build": "tsc",
 		"start": "node dist/server.js",
-		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
 		"seed": "tsc && node dist/db/seed.js"
 	},
 	"keywords": [],

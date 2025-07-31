@@ -7,6 +7,7 @@ interface Modal {
 	onSubmit: (payload: { name: string; prompt: string }) => Promise<void>;
 	initialData?: { name: string; prompt: string };
 	title?: string;
+	submitButtonLabel?: string;
 }
 
 type BrandPayload = { name: string; prompt: string };
@@ -16,6 +17,7 @@ export function Modal({
 	onSubmit,
 	initialData = { name: "", prompt: "" },
 	title = "Create New Brand",
+	submitButtonLabel = "Create Brand",
 }: Modal) {
 	const modalRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +50,11 @@ export function Modal({
 			>
 				<ModalHeader title={title} onClose={onClose} />
 
-				<ModalForm initialData={initialData} onSubmit={submit} />
+				<ModalForm
+					initialData={initialData}
+					onSubmit={submit}
+					label={submitButtonLabel}
+				/>
 			</div>
 		</div>
 	);
