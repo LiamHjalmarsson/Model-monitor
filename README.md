@@ -61,10 +61,6 @@
 
 ## Endpoints
 
-## 📡 API Endpoints
-
-## 📡 API Endpoints
-
 | Function                      | Method  | Endpoint                                   |
 |------------------------------|---------|--------------------------------------------|
 | Login                        | `POST`  | `/api/auth/login`                          |
