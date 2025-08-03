@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Sidebar } from "../../components/layout/Sidebar";
-import { useBrandStore } from "../../store/brand";
-import { useResponseStore } from "../../store/response";
-import { useRatingStore } from "../../store/rating";
-import { Modal } from "../../components/shared/Modal";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {Sidebar} from "../../components/layout/Sidebar";
+import {useBrandStore} from "../../store/brand";
+import {useResponseStore} from "../../store/response";
+import {useRatingStore} from "../../store/rating";
+import {Modal} from "../../components/shared/Modal";
 import Button from "../../components/ui/Button";
 import Header from "../../components/layout/Header";
-import { deleteBrand } from "../../api/brand";
-import { useNavigate } from "react-router-dom";
+import {deleteBrand} from "../../api/brand";
+import {useNavigate} from "react-router-dom";
 import ResponseList from "../../components/response/List";
 import ConfirmationModal from "../../components/shared/ConfirmationModal";
 
@@ -18,21 +18,15 @@ interface UpdateBrand {
 }
 
 export default function BrandPage() {
-	const { brandId } = useParams<{ brandId: string }>();
+	const {brandId} = useParams<{brandId: string}>();
 
 	const numberId = Number(brandId);
 
-	const { brands, getBrands, updateBrand } = useBrandStore();
+	const {brands, getBrands, updateBrand} = useBrandStore();
 
-	const { ratings, addRating, editRating } = useRatingStore();
+	const {ratings, addRating, editRating} = useRatingStore();
 
-	const {
-		responses,
-		clearResponses,
-		getResponsesForBrand,
-		createResponse,
-		generateAIResponse,
-	} = useResponseStore();
+	const {responses, clearResponses, getResponsesForBrand, createResponse, generateAIResponse} = useResponseStore();
 
 	const [loading, setLoading] = useState(false);
 
@@ -95,7 +89,7 @@ export default function BrandPage() {
 			if (existing) {
 				await editRating(existing.id, rating);
 			} else {
-				await addRating({ responseId, rating });
+				await addRating({responseId, rating});
 			}
 		} catch {
 			setError("Failed to rate response");
@@ -124,22 +118,13 @@ export default function BrandPage() {
 		<div className="flex min-h-screen bg-gray-50">
 			<Sidebar />
 			<main className="flex-1 p-xl container mx-auto">
-				<Header
-					title={brand ? brand.name : "Brand"}
-					subtitle={brand ? brand.prompt : "Promt"}
-				>
+				<Header title={brand ? brand.name : "Brand"} subtitle={brand ? brand.prompt : "Promt"}>
 					{brand && (
 						<div className="flex space-x-xl">
-							<Button
-								onClick={() => setShowEditModal(true)}
-								variant="edit"
-							>
+							<Button onClick={() => setShowEditModal(true)} variant="edit">
 								Edit Brand
 							</Button>
-							<Button
-								onClick={() => setShowConfirmModal(true)}
-								variant="danger"
-							>
+							<Button onClick={() => setShowConfirmModal(true)} variant="danger">
 								Delete Brand
 							</Button>
 						</div>
@@ -147,11 +132,7 @@ export default function BrandPage() {
 				</Header>
 
 				<div className="flex gap-xl mb-xl">
-					<Button
-						onClick={handleCreate}
-						disabled={loading}
-						variant="secondary"
-					>
+					<Button onClick={handleCreate} disabled={loading} variant="secondary">
 						Create Dummy Response
 					</Button>
 
@@ -165,15 +146,9 @@ export default function BrandPage() {
 					</Button>
 				</div>
 
-				{error && (
-					<p className="text-danger-500 text-sm mb-sm">{error}</p>
-				)}
+				{error && <p className="text-danger-500 text-sm mb-sm">{error}</p>}
 
-				<ResponseList
-					responses={responses}
-					ratings={ratings}
-					onRate={handleRate}
-				/>
+				<ResponseList responses={responses} ratings={ratings} onRate={handleRate} />
 			</main>
 
 			{showEditModal && brand && (
@@ -182,7 +157,7 @@ export default function BrandPage() {
 					onClose={() => setShowEditModal(false)}
 					onSubmit={handleUpdateBrand}
 					submitButtonLabel="Update"
-					initialData={{ name: brand.name, prompt: brand.prompt }}
+					initialData={{name: brand.name, prompt: brand.prompt}}
 				/>
 			)}
 

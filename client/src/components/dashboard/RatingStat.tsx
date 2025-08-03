@@ -5,12 +5,7 @@ type RatingStat = {
 	variant: "like" | "dislike";
 };
 
-export default function RatingStat({
-	icon,
-	label,
-	count,
-	variant,
-}: RatingStat) {
+export default function RatingStat({icon, label, count, variant}: RatingStat) {
 	const bgClass =
 		variant === "like"
 			? "bg-confirm-500/20 text-confirm-600 text-confirm-600"

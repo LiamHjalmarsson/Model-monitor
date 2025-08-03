@@ -1,10 +1,10 @@
-import { FiPlusCircle } from "react-icons/fi";
+import {FiPlusCircle} from "react-icons/fi";
 
 interface CreateBrand {
 	onClick: () => void;
 }
 
-export function CreateBrandButton({ onClick }: CreateBrand) {
+export function CreateBrandButton({onClick}: CreateBrand) {
 	return (
 		<button
 			onClick={onClick}

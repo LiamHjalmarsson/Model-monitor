@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { MdLockOutline } from "react-icons/md";
-import { AxiosError } from "axios";
-import { useAuthStore } from "../../store/auth";
-import { login } from "../../api/auth";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {MdLockOutline} from "react-icons/md";
+import {AxiosError} from "axios";
+import {useAuthStore} from "../../store/auth";
+import {login} from "../../api/auth";
 import InputField from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 
@@ -28,13 +28,13 @@ export default function Login() {
 		setLoading(true);
 
 		try {
-			const { token, user } = await login(email, password);
+			const {token, user} = await login(email, password);
 
 			loginStore(token, user.email);
 
 			navigate("/");
 		} catch (err) {
-			const axiosErr = err as AxiosError<{ message: string }>;
+			const axiosErr = err as AxiosError<{message: string}>;
 
 			setError(axiosErr.response?.data?.message || "Login failed");
 		} finally {
@@ -46,7 +46,7 @@ export default function Login() {
 		<div className="relative min-h-screen flex items-center justify-center bg-gray-900">
 			<div
 				className="absolute inset-0 bg-cover bg-center opacity-40"
-				style={{ backgroundImage: "url('/bg.png')" }}
+				style={{backgroundImage: "url('/bg.png')"}}
 			/>
 
 			<div className="absolute inset-0 bg-primary-500/10" />
@@ -86,10 +86,7 @@ export default function Login() {
 
 				<p className="mt-lg text-center text-sm text-gray-200">
 					Don't have an account?{" "}
-					<Link
-						to="/register"
-						className="text-primary-500 block mt-xxs font-bold hover:underline"
-					>
+					<Link to="/register" className="text-primary-500 block mt-xxs font-bold hover:underline">
 						Register
 					</Link>
 				</p>

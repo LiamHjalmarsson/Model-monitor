@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useResponseStore } from "../../store/response";
-import type { Brand } from "../../api/brand";
-import { FaRegComments, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { FiArrowRightCircle } from "react-icons/fi";
+import {useEffect} from "react";
+import {Link} from "react-router-dom";
+import {useResponseStore} from "../../store/response";
+import type {Brand} from "../../api/brand";
+import {FaRegComments, FaThumbsUp, FaThumbsDown} from "react-icons/fa";
+import {FiArrowRightCircle} from "react-icons/fi";
 
 interface LatestBrandPreviewProps {
 	brand: Brand;
@@ -20,8 +20,7 @@ export function LatestBrandPreview({
 	borderClass = "border-blue-200",
 	hoverBorderClass = "hover:border-blue-400/30",
 }: LatestBrandPreviewProps) {
-	const { responses, getResponsesForBrand, clearResponses } =
-		useResponseStore();
+	const {responses, getResponsesForBrand, clearResponses} = useResponseStore();
 
 	useEffect(() => {
 		getResponsesForBrand(brand.id);
@@ -32,9 +31,7 @@ export function LatestBrandPreview({
 
 	return (
 		<section className="mt-xl">
-			<h3 className="text-2xl font-bold text-gray-800 mb-xl">
-				Latest Brand
-			</h3>
+			<h3 className="text-2xl font-bold text-gray-800 mb-xl">Latest Brand</h3>
 
 			<Link to={`/brands/${brand.id}`}>
 				<div
@@ -48,18 +45,14 @@ export function LatestBrandPreview({
 
 					<div className="relative z-10 flex flex-col space-y-3">
 						<div className="flex items-center justify-between">
-							<h4 className="text-xl font-semibold text-black">
-								{brand.name}
-							</h4>
+							<h4 className="text-xl font-semibold text-black">{brand.name}</h4>
 							<FiArrowRightCircle
 								className="text-primary-500 group-hover:translate-x-1 transition-transform duration-200"
 								size={24}
 							/>
 						</div>
 
-						<p className="text-dark-gray text-sm whitespace-pre-wrap">
-							{brand.prompt}
-						</p>
+						<p className="text-dark-gray text-sm whitespace-pre-wrap">{brand.prompt}</p>
 
 						<div className="flex justify-between items-center text-gray">
 							<div className="flex items-center">

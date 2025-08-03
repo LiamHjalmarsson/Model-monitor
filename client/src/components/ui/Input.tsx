@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type {ChangeEvent} from "react";
 
 interface InputField {
 	label: string;
@@ -8,22 +8,14 @@ interface InputField {
 	placeholder: string;
 }
 
-export default function InputField({
-	label,
-	type,
-	value,
-	onChange,
-	placeholder,
-}: InputField) {
+export default function InputField({label, type, value, onChange, placeholder}: InputField) {
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		onChange(event.target.value);
 	};
 
 	return (
 		<div>
-			<label className="block text-sm font-medium text-gray-100 mb-xs">
-				{label}
-			</label>
+			<label className="block text-sm font-medium text-gray-100 mb-xs">{label}</label>
 			<input
 				type={type}
 				value={value}

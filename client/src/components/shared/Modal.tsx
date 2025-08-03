@@ -1,21 +1,21 @@
-import { useEffect, useRef } from "react";
+import {useEffect, useRef} from "react";
 import ModalHeader from "./ModalHeader";
 import ModalForm from "./ModalForn";
 
 interface Modal {
 	onClose: () => void;
-	onSubmit: (payload: { name: string; prompt: string }) => Promise<void>;
-	initialData?: { name: string; prompt: string };
+	onSubmit: (payload: {name: string; prompt: string}) => Promise<void>;
+	initialData?: {name: string; prompt: string};
 	title?: string;
 	submitButtonLabel?: string;
 }
 
-type BrandPayload = { name: string; prompt: string };
+type BrandPayload = {name: string; prompt: string};
 
 export function Modal({
 	onClose,
 	onSubmit,
-	initialData = { name: "", prompt: "" },
+	initialData = {name: "", prompt: ""},
 	title = "Create New Brand",
 	submitButtonLabel = "Create Brand",
 }: Modal) {
@@ -23,17 +23,13 @@ export function Modal({
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
-			if (
-				modalRef.current &&
-				!modalRef.current.contains(event.target as Node)
-			) {
+			if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
 				onClose();
 			}
 		}
 
 		document.addEventListener("mousedown", handleClickOutside);
-		return () =>
-			document.removeEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [onClose]);
 
 	async function submit(payload: BrandPayload) {
@@ -50,11 +46,7 @@ export function Modal({
 			>
 				<ModalHeader title={title} onClose={onClose} />
 
-				<ModalForm
-					initialData={initialData}
-					onSubmit={submit}
-					label={submitButtonLabel}
-				/>
+				<ModalForm initialData={initialData} onSubmit={submit} label={submitButtonLabel} />
 			</div>
 		</div>
 	);

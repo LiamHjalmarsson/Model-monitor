@@ -1,6 +1,6 @@
-import type { Brand } from "../../api/brand";
-import { BrandCard } from "./Card";
-import { CreateBrandButton } from "./CreateButton";
+import type {Brand} from "../../api/brand";
+import {BrandCard} from "./Card";
+import {CreateBrandButton} from "./CreateButton";
 
 interface BrandsProps {
 	brands: Brand[];
@@ -46,20 +46,14 @@ const colorMap = [
 	},
 ];
 
-export default function Brands({ brands, onCreate }: BrandsProps) {
+export default function Brands({brands, onCreate}: BrandsProps) {
 	return (
 		<section>
-			<h2 className="text-xl font-semibold text-gray-dark mb-md">
-				Your Brands
-			</h2>
+			<h2 className="text-xl font-semibold text-gray-dark mb-md">Your Brands</h2>
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
 				{brands.map((brand, index) => {
-					const {
-						gradientFromClass,
-						gradientToClass,
-						borderClass,
-						hoverBorderClass,
-					} = colorMap[index % colorMap.length];
+					const {gradientFromClass, gradientToClass, borderClass, hoverBorderClass} =
+						colorMap[index % colorMap.length];
 
 					return (
 						<BrandCard

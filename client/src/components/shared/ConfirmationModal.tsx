@@ -1,6 +1,6 @@
 import Button from "../ui/Button";
 import ModalHeader from "./ModalHeader";
-import { useRef, useState } from "react";
+import {useRef, useState} from "react";
 
 interface ConfirmationModalProps {
 	title: string;
@@ -9,12 +9,7 @@ interface ConfirmationModalProps {
 	onCancel: () => void;
 }
 
-export default function ConfirmationModal({
-	title,
-	message,
-	onConfirm,
-	onCancel,
-}: ConfirmationModalProps) {
+export default function ConfirmationModal({title, message, onConfirm, onCancel}: ConfirmationModalProps) {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -51,12 +46,7 @@ export default function ConfirmationModal({
 								Cancel
 							</Button>
 
-							<Button
-								variant="primary"
-								onClick={handleConfirm}
-								disabled={loading}
-								className="w-full"
-							>
+							<Button variant="primary" onClick={handleConfirm} disabled={loading} className="w-full">
 								Confirm
 							</Button>
 						</div>

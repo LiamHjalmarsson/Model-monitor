@@ -1,4 +1,4 @@
-import { FiPlus, FiZap } from "react-icons/fi";
+import {FiPlus, FiZap} from "react-icons/fi";
 import Button from "../ui/Button";
 
 interface Props {
@@ -7,11 +7,7 @@ interface Props {
 	onGenerate: () => void;
 }
 
-export default function ResponseActions({
-	loading,
-	onCreate,
-	onGenerate,
-}: Props) {
+export default function ResponseActions({loading, onCreate, onGenerate}: Props) {
 	return (
 		<div className="flex gap-4 mb-6">
 			<Button

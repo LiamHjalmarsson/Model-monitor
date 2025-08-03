@@ -1,6 +1,6 @@
-import { MdDashboard, MdLogout } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/auth";
+import {MdDashboard, MdLogout} from "react-icons/md";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuthStore} from "../../store/auth";
 
 export function Sidebar() {
 	const navigate = useNavigate();
@@ -15,14 +15,9 @@ export function Sidebar() {
 
 	return (
 		<aside className="w-64 bg-white shadow-md border-r border-gray-200 pt-xxl px-xl pb-xl flex flex-col">
-			<h2 className="text-2xl font-bold text-primary-500 mb-xl flex items-center">
-				Model Monitor
-			</h2>
+			<h2 className="text-2xl font-bold text-primary-500 mb-xl flex items-center">Model Monitor</h2>
 			<nav className="flex flex-col space-y-md text-gray-dark text-md flex-1">
-				<Link
-					to="/"
-					className="flex items-center hover:text-primary-600 transition font-semibold"
-				>
+				<Link to="/" className="flex items-center hover:text-primary-600 transition font-semibold">
 					<MdDashboard size={20} className="mr-md" />
 					Dashboard
 				</Link>

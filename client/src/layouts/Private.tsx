@@ -1,5 +1,5 @@
-import { Outlet, Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/auth";
+import {Outlet, Navigate} from "react-router-dom";
+import {useAuthStore} from "../store/auth";
 
 const PrivateLayout = () => {
 	const token = useAuthStore((state) => state.token);

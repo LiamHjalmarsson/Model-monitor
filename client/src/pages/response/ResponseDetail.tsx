@@ -1,16 +1,15 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useResponseStore } from "../../store/response";
+import {useParams, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {useResponseStore} from "../../store/response";
 import Button from "../../components/ui/Button";
 import ResponseCard from "../../components/response/Card";
 
 export default function ResponseDetail() {
-	const { id } = useParams<{ id: string }>();
+	const {id} = useParams<{id: string}>();
 
 	const navigate = useNavigate();
 
-	const { currentResponse, getResponseById, rateResponse } =
-		useResponseStore();
+	const {currentResponse, getResponseById, rateResponse} = useResponseStore();
 
 	useEffect(() => {
 		if (id) {
@@ -36,9 +35,7 @@ export default function ResponseDetail() {
 				← Back to brand
 			</Button>
 
-			<h1 className="text-2xl font-bold text-black my-md">
-				Response #{currentResponse.id}
-			</h1>
+			<h1 className="text-2xl font-bold text-black my-md">Response #{currentResponse.id}</h1>
 
 			<ResponseCard response={currentResponse} onRate={handleRate} />
 		</div>

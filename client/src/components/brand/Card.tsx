@@ -1,6 +1,6 @@
-import { FiArrowRightCircle } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import type { Brand } from "../../api/brand";
+import {FiArrowRightCircle} from "react-icons/fi";
+import {Link} from "react-router-dom";
+import type {Brand} from "../../api/brand";
 
 interface BrandCardProps {
 	brand: Brand;
@@ -30,10 +30,7 @@ export function BrandCard({
 			<div className="relative z-10 flex flex-col">
 				<h3 className="text-lg font-semibold text-gray-dark flex items-center mb-xs">
 					{brand.name}
-					<FiArrowRightCircle
-						className="ml-auto text-black"
-						size={22}
-					/>
+					<FiArrowRightCircle className="ml-auto text-black" size={22} />
 				</h3>
 				<p className="text-gray text-sm">{brand.prompt}</p>
 			</div>

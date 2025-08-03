@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { ResponseItem } from "../api/response";
+import {create} from "zustand";
+import type {ResponseItem} from "../api/response";
 import {
 	getResponsesForBrand,
 	getResponseById,
@@ -7,7 +7,7 @@ import {
 	generateAIResponse,
 	getUserOwnedResponseById,
 } from "../api/response";
-import { createRating, updateRating } from "../api/rating";
+import {createRating, updateRating} from "../api/rating";
 
 interface ResponseStore {
 	responses: ResponseItem[];
@@ -18,11 +18,7 @@ interface ResponseStore {
 	getUserOwnedResponseById: (id: number) => Promise<void>;
 	createResponse: (brandId: number) => Promise<void>;
 	generateAIResponse: (brandId: number) => Promise<void>;
-	rateResponse: (
-		responseId: number,
-		rating: 0 | 1,
-		ratingId?: number
-	) => Promise<void>;
+	rateResponse: (responseId: number, rating: 0 | 1, ratingId?: number) => Promise<void>;
 	clearResponses: () => void;
 }
 
@@ -32,42 +28,42 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 	responses: [],
 
 	getResponsesForBrand: async (brandId: number) => {
-		set({ loading: true });
+		set({loading: true});
 
 		try {
 			const responses = await getResponsesForBrand(brandId);
 
-			set({ responses, loading: false });
+			set({responses, loading: false});
 		} catch {
-			set({ loading: false });
+			set({loading: false});
 		}
 	},
 
 	getResponseById: async (id: number) => {
-		set({ loading: true });
+		set({loading: true});
 
 		try {
 			const response = await getResponseById(id);
 
-			set({ currentResponse: response, loading: false });
+			set({currentResponse: response, loading: false});
 		} catch {
-			set({ loading: false });
+			set({loading: false});
 		}
 	},
 
 	getUserOwnedResponseById: async (id: number) => {
-		set({ loading: true });
+		set({loading: true});
 		try {
 			const response = await getUserOwnedResponseById(id);
 
-			set({ currentResponse: response, loading: false });
+			set({currentResponse: response, loading: false});
 		} catch {
-			set({ loading: false });
+			set({loading: false});
 		}
 	},
 
 	createResponse: async (brandId: number) => {
-		set({ loading: true });
+		set({loading: true});
 
 		try {
 			const response = await createResponse(brandId);
@@ -77,12 +73,12 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 				loading: false,
 			}));
 		} catch {
-			set({ loading: false });
+			set({loading: false});
 		}
 	},
 
 	generateAIResponse: async (brandId: number) => {
-		set({ loading: true });
+		set({loading: true});
 
 		try {
 			const response = await generateAIResponse(brandId);
@@ -92,7 +88,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 				loading: false,
 			}));
 		} catch {
-			set({ loading: false });
+			set({loading: false});
 		}
 	},
 
@@ -102,9 +98,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 
 			set((state) => ({
 				responses: state.responses.map((res) =>
-					res.id === rated.response_id
-						? { ...res, rating: rated.rating }
-						: res
+					res.id === rated.response_id ? {...res, rating: rated.rating} : res
 				),
 			}));
 		} catch {
@@ -115,9 +109,7 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 
 				set((state) => ({
 					responses: state.responses.map((res) =>
-						res.id === updated.response_id
-							? { ...res, rating: updated.rating }
-							: res
+						res.id === updated.response_id ? {...res, rating: updated.rating} : res
 					),
 				}));
 			}
@@ -125,6 +117,6 @@ export const useResponseStore = create<ResponseStore>((set) => ({
 	},
 
 	clearResponses: () => {
-		set({ responses: [], currentResponse: null });
+		set({responses: [], currentResponse: null});
 	},
 }));

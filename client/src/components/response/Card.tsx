@@ -1,6 +1,6 @@
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import type { ResponseItem } from "../../api/response";
-import { Link } from "react-router-dom";
+import {FaThumbsUp, FaThumbsDown} from "react-icons/fa";
+import type {ResponseItem} from "../../api/response";
+import {Link} from "react-router-dom";
 
 interface ResponseCardProps {
 	response: ResponseItem;
@@ -8,16 +8,11 @@ interface ResponseCardProps {
 	onRate: (id: number, rating: 0 | 1) => void;
 }
 
-export default function ResponseCard({
-	response,
-	rating,
-	onRate,
-}: ResponseCardProps) {
+export default function ResponseCard({response, rating, onRate}: ResponseCardProps) {
 	const isLiked = rating === 1;
 	const isDisliked = rating === 0;
 
-	const baseClasses =
-		"rounded-2xl shadow-lg transition p-6 flex flex-col justify-between h-full border";
+	const baseClasses = "rounded-2xl shadow-lg transition p-6 flex flex-col justify-between h-full border";
 
 	const borderClass = isLiked
 		? "border-green-200 bg-green-50"
@@ -28,22 +23,16 @@ export default function ResponseCard({
 	return (
 		<div className={`${baseClasses} ${borderClass}`}>
 			<div className="mb-4">
-				<p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap">
-					{response.content}
-				</p>
+				<p className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap">{response.content}</p>
 			</div>
 
 			<div className="flex items-center justify-between">
-				<p className="text-xs text-gray-400">
-					{new Date(response.created_at).toLocaleString()}
-				</p>
+				<p className="text-xs text-gray-400">{new Date(response.created_at).toLocaleString()}</p>
 				<div className="flex items-center gap-2">
 					<button
 						onClick={() => onRate(response.id, 1)}
 						className={`p-2 rounded-full transition cursor-pointer ${
-							isLiked
-								? "bg-green-100 text-green-700"
-								: "bg-green-50 text-green-600 hover:bg-green-100"
+							isLiked ? "bg-green-100 text-green-700" : "bg-green-50 text-green-600 hover:bg-green-100"
 						}`}
 						aria-label="Like"
 					>
@@ -52,19 +41,14 @@ export default function ResponseCard({
 					<button
 						onClick={() => onRate(response.id, 0)}
 						className={`p-2 rounded-full transition cursor-pointer ${
-							isDisliked
-								? "bg-red-100 text-red-700"
-								: "bg-red-50 text-red-600 hover:bg-red-100"
+							isDisliked ? "bg-red-100 text-red-700" : "bg-red-50 text-red-600 hover:bg-red-100"
 						}`}
 						aria-label="Dislike"
 					>
 						<FaThumbsDown />
 					</button>
 
-					<Link
-						to={`/responses/${response.id}`}
-						className="ml-auto text-blue-600 hover:underline"
-					>
+					<Link to={`/responses/${response.id}`} className="ml-auto text-blue-600 hover:underline">
 						View Details
 					</Link>
 				</div>

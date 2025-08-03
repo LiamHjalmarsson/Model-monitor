@@ -1,16 +1,14 @@
-import { useState } from "react";
+import {useState} from "react";
 import Button from "../ui/Button";
 
 interface ModalForm {
-	initialData: { name: string; prompt: string };
-	onSubmit: (data: { name: string; prompt: string }) => Promise<void>;
+	initialData: {name: string; prompt: string};
+	onSubmit: (data: {name: string; prompt: string}) => Promise<void>;
 	label: string;
 }
 
-export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
-	const [formData, setFormData] = useState<{ name: string; prompt: string }>(
-		initialData
-	);
+export default function ModalForm({initialData, onSubmit, label}: ModalForm) {
+	const [formData, setFormData] = useState<{name: string; prompt: string}>(initialData);
 
 	const [error, setError] = useState("");
 
@@ -31,7 +29,7 @@ export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
 		try {
 			await onSubmit(formData);
 
-			setFormData({ name: "", prompt: "" });
+			setFormData({name: "", prompt: ""});
 		} catch {
 			setError("Failed to create brand.");
 		} finally {
@@ -39,19 +37,15 @@ export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
 		}
 	};
 
-	const handleInputChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		const { name, value } = event.target;
-		setFormData((prev) => ({ ...prev, [name]: value }));
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		const {name, value} = event.target;
+		setFormData((prev) => ({...prev, [name]: value}));
 	};
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-xl">
 			<div>
-				<label className="mb-sm block text-sm font-medium">
-					Brand Name
-				</label>
+				<label className="mb-sm block text-sm font-medium">Brand Name</label>
 				<input
 					type="text"
 					name="name"
@@ -62,9 +56,7 @@ export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
 				/>
 			</div>
 			<div>
-				<label className="mb-sm block text-sm font-medium">
-					Prompt
-				</label>
+				<label className="mb-sm block text-sm font-medium">Prompt</label>
 				<textarea
 					name="prompt"
 					value={formData.prompt}
@@ -76,12 +68,7 @@ export default function ModalForm({ initialData, onSubmit, label }: ModalForm) {
 
 			{error && <p className="text-sm text-red-500">{error}</p>}
 
-			<Button
-				variant="primary"
-				type="submit"
-				loading={loading}
-				className="w-full"
-			>
+			<Button variant="primary" type="submit" loading={loading} className="w-full">
 				{label}
 			</Button>
 		</form>

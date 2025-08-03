@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { logout } from '../api/auth';
+import {create} from "zustand";
+import {persist} from "zustand/middleware";
+import {logout} from "../api/auth";
 
 export interface AuthState {
 	token: string | null;
@@ -16,21 +16,21 @@ export const useAuthStore = create<AuthState>()(
 			token: null,
 			userEmail: null,
 			loading: false,
-			login: (token: string, userEmail: string) => set({ token, userEmail }),
+			login: (token: string, userEmail: string) => set({token, userEmail}),
 			logout: async () => {
-				set({ loading: true });
+				set({loading: true});
 
 				try {
 					await logout();
 
-					set({ token: null, userEmail: null, loading: false });
+					set({token: null, userEmail: null, loading: false});
 				} catch (error) {
-					set({ loading: false });
+					set({loading: false});
 				}
 			},
 		}),
 		{
-			name: 'auth-storage',
+			name: "auth-storage",
 		}
 	)
 );
