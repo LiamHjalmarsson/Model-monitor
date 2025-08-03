@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { SignOptions } from "jsonwebtoken";
+import {SignOptions} from "jsonwebtoken";
 
 dotenv.config();
 
@@ -25,8 +25,7 @@ const config: Config = {
 	pgDb: process.env.POSTGRES_DB || "mydb",
 	pgPort: Number(process.env.POSTGRES_PORT) || 5432,
 	jwtSecret: process.env.JWT_SECRET || "default_secret",
-	jwtExpiresIn:
-		(process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"]) ?? "1h",
+	jwtExpiresIn: (process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"]) ?? "1h",
 	openAi: process.env.OPEN_AI || "development",
 };
 
