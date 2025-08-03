@@ -1,5 +1,5 @@
+import {hashPassword} from "../../utils/password.js";
 import db from "../index.js";
-import bcrypt from "bcryptjs";
 
 export default async function seedUsers() {
 	await db.query(`DROP TABLE IF EXISTS users CASCADE`);
@@ -12,12 +12,12 @@ export default async function seedUsers() {
 			);
 		`);
 
-	const hashed = await bcrypt.hash("password", 10);
+	const hashedPassword = await hashPassword("password");
 
 	await db.query(
 		`INSERT INTO users (email, password) VALUES 
 			('test@example.com', $1),
 			('admin@example.com', $1)`,
-		[hashed]
+		[hashedPassword]
 	);
 }

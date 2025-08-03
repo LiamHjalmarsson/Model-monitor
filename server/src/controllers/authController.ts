@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
 import {Request, Response, NextFunction} from "express";
 import {query} from "../db/index.js";
 import {generateToken} from "../utils/token.js";
 import {StatusCodes} from "http-status-codes";
+import {comparePassword} from "../utils/password.js";
 
 interface User {
 	id: number;
@@ -22,12 +22,10 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
 		const {id, password} = result.rows[0];
 
-		const match = await bcrypt.compare(candidate, password);
+		const passwordMatch = await comparePassword(candidate, password);
 
-		if (!match) {
-			res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid email or password"});
-
-			return;
+		if (!passwordMatch) {
+			return res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid email or password"});
 		}
 
 		const token = generateToken(id);
