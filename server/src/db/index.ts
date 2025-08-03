@@ -1,4 +1,4 @@
-import { Pool, PoolConfig, QueryResult, QueryResultRow } from "pg";
+import {Pool, PoolConfig, QueryResult, QueryResultRow} from "pg";
 import config from "../config/config.js";
 
 const poolConfig: PoolConfig = {

@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import {body} from "express-validator";
 
 export const brandValidator = [
 	body("name").notEmpty().withMessage("Name is required"),

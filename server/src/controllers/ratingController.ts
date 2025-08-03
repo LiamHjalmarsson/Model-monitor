@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import { query } from "../db/index.js";
+import {Request, Response} from "express";
+import {query} from "../db/index.js";
+import {StatusCodes} from "http-status-codes";
 
 interface AuthenticatedRequest extends Request {
 	userId?: number;
@@ -8,10 +9,10 @@ interface AuthenticatedRequest extends Request {
 export async function getRatings(req: AuthenticatedRequest, res: Response) {
 	const userId = req.userId!;
 
-	const { responseId } = req.query;
+	const {responseId} = req.query;
 
 	if (!userId) {
-		return res.status(401).json({ message: 'Unauthorized' });
+		return res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
 	}
 
 	try {
@@ -23,7 +24,7 @@ export async function getRatings(req: AuthenticatedRequest, res: Response) {
 				WHERE b.created_by = $1
 		`;
 
-		const params: (string | number)[] = [ userId ];
+		const params: (string | number)[] = [userId];
 
 		if (responseId) {
 			sql += ` AND r.response_id = $${params.length + 1}`;
@@ -31,11 +32,11 @@ export async function getRatings(req: AuthenticatedRequest, res: Response) {
 			params.push(Number(responseId));
 		}
 
-		const { rows } = await query(sql, params);
+		const {rows} = await query(sql, params);
 
-		res.status(200).json(rows);
+		res.status(StatusCodes.OK).json(rows);
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message: "Server error"});
 	}
 }
 
@@ -45,7 +46,7 @@ export async function getRatingById(req: AuthenticatedRequest, res: Response) {
 	const userId = req.userId!;
 
 	try {
-		const { rows, rowCount } = await query(
+		const {rows, rowCount} = await query(
 			`
 			SELECT r.*
 				FROM ratings r
@@ -54,48 +55,51 @@ export async function getRatingById(req: AuthenticatedRequest, res: Response) {
 				WHERE r.id = $1
 				AND b.created_by = $2
 		`,
-			[ id, userId ]
+			[id, userId]
 		);
 
 		if (rowCount === 0) {
-			return res.status(404).json({ message: "Rating not found or not authorized" });
+			return res.status(404).json({message: "Rating not found or not authorized"});
 		}
 
-		res.status(200).json(rows[ 0 ]);
+		res.status(StatusCodes.OK).json(rows[0]);
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message: "Server error"});
 	}
 }
 
 export async function createRating(req: AuthenticatedRequest, res: Response) {
 	try {
-		const { responseId, rating } = req.body;
+		const {responseId, rating} = req.body;
 
 		const userId = req.userId;
 
 		if (!userId) {
-			return res.status(401).json({ message: "Unauthorized" });
+			return res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
 		}
 
 		if (rating !== 0 && rating !== 1) {
-			return res.status(400).json({ message: "Rating must be 0 or 1" });
+			return res.status(StatusCodes.BAD_REQUEST).json({message: "Rating must be 0 or 1"});
 		}
 
-		const existing = await query(`SELECT * FROM ratings WHERE user_id = $1 AND response_id = $2`, [ userId, responseId ]);
+		const existing = await query(`SELECT * FROM ratings WHERE user_id = $1 AND response_id = $2`, [
+			userId,
+			responseId,
+		]);
 
 		if (existing.rows.length > 0) {
-			return res.status(409).json({ message: "You have already rated this response" });
+			return res.status(StatusCodes.CONFLICT).json({message: "You have already rated this response"});
 		}
 
-		const { rows } = await query(
+		const {rows} = await query(
 			`INSERT INTO ratings (response_id, rating, user_id)
   			 VALUES ($1, $2, $3) RETURNING *`,
-			[ responseId, rating, userId ]
+			[responseId, rating, userId]
 		);
 
-		res.status(201).json(rows[ 0 ]);
+		res.status(StatusCodes.CREATED).json(rows[0]);
 	} catch (error) {
-		res.status(500).send("Server error");
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server error");
 	}
 }
 
@@ -103,26 +107,30 @@ export async function updateRating(req: AuthenticatedRequest, res: Response) {
 	try {
 		const id = Number(req.params.id);
 
-		const { rating } = req.body;
+		const {rating} = req.body;
 
 		const userId = req.userId;
 
 		if (!userId) {
-			return res.status(401).json({ message: "Unauthorized" });
+			return res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
 		}
 
 		if (rating !== 0 && rating !== 1) {
-			return res.status(400).json({ message: "Rating must be 0 or 1" });
+			return res.status(StatusCodes.BAD_REQUEST).json({message: "Rating must be 0 or 1"});
 		}
 
-		const { rows } = await query(`UPDATE ratings SET rating = $1 WHERE id = $2 AND user_id = $3 RETURNING *`, [ rating, id, userId ]);
+		const {rows} = await query(`UPDATE ratings SET rating = $1 WHERE id = $2 AND user_id = $3 RETURNING *`, [
+			rating,
+			id,
+			userId,
+		]);
 
 		if (rows.length === 0) {
-			return res.status(404).json({ message: "Rating not found or unauthorized" });
+			return res.status(StatusCodes.NOT_FOUND).json({message: "Rating not found or unauthorized"});
 		}
 
-		res.status(201).json(rows[ 0 ]);
+		res.status(StatusCodes.CREATED).json(rows[0]);
 	} catch (error) {
-		res.status(500).send("Server error");
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server error");
 	}
 }

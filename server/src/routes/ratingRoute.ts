@@ -1,10 +1,5 @@
-import { Router } from "express";
-import {
-	getRatings,
-	getRatingById,
-	createRating,
-	updateRating,
-} from "../controllers/ratingController.js";
+import {Router} from "express";
+import {getRatings, getRatingById, createRating, updateRating} from "../controllers/ratingController.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = Router();
