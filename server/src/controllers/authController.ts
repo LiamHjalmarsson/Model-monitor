@@ -10,16 +10,14 @@ interface User {
 	password: string;
 }
 
-export async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function login(req: Request, res: Response, next: NextFunction) {
 	try {
 		const {email, password: candidate} = req.body;
 
 		const result = await query<User>("SELECT id, email, password FROM users WHERE email = $1", [email]);
 
 		if (result.rowCount === 0) {
-			res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid email or password"});
-
-			return;
+			return res.status(StatusCodes.UNAUTHORIZED).json({message: "Invalid email or password"});
 		}
 
 		const {id, password} = result.rows[0];

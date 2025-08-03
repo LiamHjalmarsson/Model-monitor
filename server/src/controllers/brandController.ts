@@ -28,8 +28,7 @@ export async function createBrand(req: AuthRequest, res: Response) {
 	const userId = req.userId;
 
 	if (!userId) {
-		res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
-		return;
+		return res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
 	}
 
 	if (!name || !prompt) {
@@ -62,8 +61,7 @@ export async function updateBrand(req: AuthRequest, res: Response) {
 		}
 
 		if (!name || !prompt) {
-			res.status(StatusCodes.BAD_REQUEST).json({message: "Name and prompt are required"});
-			return;
+			return res.status(StatusCodes.BAD_REQUEST).json({message: "Name and prompt are required"});
 		}
 
 		const check = await query(`SELECT * FROM brands WHERE id = $1 AND created_by = $2`, [brandId, userId]);
@@ -90,8 +88,7 @@ export async function deleteBrand(req: AuthRequest, res: Response) {
 	const userId = req.userId;
 
 	if (!userId) {
-		res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
-		return;
+		return res.status(StatusCodes.UNAUTHORIZED).json({message: "Unauthorized"});
 	}
 
 	try {
